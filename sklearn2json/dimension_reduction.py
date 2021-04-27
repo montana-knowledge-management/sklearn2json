@@ -1,6 +1,7 @@
 import numpy as np
 from sklearn.decomposition import TruncatedSVD
 
+
 def serialize_lsa(model):
     serialized_model = {
         'meta': 'lsa',
@@ -13,6 +14,7 @@ def serialize_lsa(model):
     }
 
     return serialized_model
+
 
 def deserialize_lsa(model_dict):
     model = TruncatedSVD(**model_dict['params'])
