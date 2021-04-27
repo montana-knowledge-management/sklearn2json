@@ -3,6 +3,7 @@ import sklearn2json
 from os import remove
 from sklearn.tree import DecisionTreeRegressor
 from sklearn.linear_model import LinearRegression, Lasso, Ridge, ElasticNet
+from sklearn.svm import SVR
 
 input_x = [[0, 2, 1],
            [3, 3, 3],
@@ -26,8 +27,8 @@ def helper_test(model):
         if not isinstance(value, type(test_model.__dict__.get(key))):
             print(
                 "Key name: {}\n"
-                "Original value:{}, Saved, reloaded value: {}\n"
-                "Original type:{}, Saved, reloaded type: {}".format(key, value, test_model.__dict__.get(key),
+                "Original value:{}; Saved reloaded value: {}\n"
+                "Original type:{}; Saved reloaded type: {}".format(key, value, test_model.__dict__.get(key),
                                                                      type(value), type(test_model.__dict__.get(key))))
     return model, test_model
 
@@ -48,4 +49,20 @@ class RegressionTestCase(unittest.TestCase):
 
     def test_to_json_from_json_linear_regression(self):
         model = LinearRegression()
+        self.test_base(model)
+
+    def test_to_json_from_json_lasso_regression(self):
+        model = Lasso()
+        self.test_base(model)
+
+    def test_to_json_from_json_elastic_net(self):
+        model = ElasticNet()
+        self.test_base(model)
+
+    def test_to_json_from_json_ridge(self):
+        model = Ridge()
+        self.test_base(model)
+
+    def test_to_json_from_json_svr(self):
+        model = SVR()
         self.test_base(model)
