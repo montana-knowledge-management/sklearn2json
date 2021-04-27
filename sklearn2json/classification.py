@@ -8,9 +8,9 @@ from sklearn.tree._tree import Tree
 from sklearn.ensemble import RandomForestClassifier, GradientBoostingClassifier, _gb_losses
 from sklearn.naive_bayes import BernoulliNB, GaussianNB, MultinomialNB, ComplementNB
 from sklearn.neural_network import MLPClassifier
-from regression import deserialize_decision_tree_regressor, serialize_decision_tree_regressor
-from csr import serialize_csr_matrix, deserialize_csr_matrix
-from label_encoders import serialize_label_binarizer, deserialize_label_binarizer
+from sklearn2json.regression import deserialize_decision_tree_regressor, serialize_decision_tree_regressor
+from sklearn2json.csr import serialize_csr_matrix, deserialize_csr_matrix
+from sklearn2json.label_encoders import serialize_label_binarizer, deserialize_label_binarizer
 
 
 def serialize_logistic_regression(model):

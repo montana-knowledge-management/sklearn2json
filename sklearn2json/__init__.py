@@ -1,11 +1,11 @@
 import json
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.svm import SVC, LinearSVC
-from classification import *
-from clustering import serialize_dbscan_clustering, deserialize_dbscan_clustering, serialize_k_means, \
+from sklearn2json.classification import *
+from sklearn2json.clustering import serialize_dbscan_clustering, deserialize_dbscan_clustering, serialize_k_means, \
     deserialize_k_means
-from dimension_reduction import serialize_lsa, deserialize_lsa
-from vectorizer import serialize_tfidf, deserialize_tfidf
+from sklearn2json.dimension_reduction import serialize_lsa, deserialize_lsa
+from sklearn2json.vectorizer import serialize_tfidf, deserialize_tfidf
 from sklearn import discriminant_analysis
 from sklearn.linear_model import LogisticRegression
 from sklearn.ensemble import RandomForestClassifier, GradientBoostingClassifier
