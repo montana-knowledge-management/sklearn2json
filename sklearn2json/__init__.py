@@ -1,12 +1,14 @@
 import json
 from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.svm import SVC, LinearSVC
+from sklearn.svm import SVC, LinearSVC, SVR
 from sklearn2json.classification import *
 from sklearn2json.clustering import serialize_dbscan_clustering, deserialize_dbscan_clustering, serialize_k_means, \
     deserialize_k_means
 from sklearn2json.dimension_reduction import serialize_lsa, deserialize_lsa
 from sklearn2json.regression import deserialize_decision_tree_regressor, serialize_decision_tree_regressor, \
-    serialize_linear_regressor, deserialize_linear_regressor
+    serialize_linear_regressor, deserialize_linear_regressor, deserialize_lasso_regressor, serialize_lasso_regressor, \
+    deserialize_elastic_regressor, serialize_elastic_regressor, deserialize_ridge_regressor, serialize_ridge_regressor, \
+    serialize_svr, deserialize_svr
 from sklearn2json.vectorizer import serialize_tfidf, deserialize_tfidf
 from sklearn import discriminant_analysis
 from sklearn.linear_model import LogisticRegression
@@ -53,6 +55,14 @@ def deserialize_model(model_dict):
         return deserialize_decision_tree_regressor(model_dict)
     elif model_dict["meta"] == 'linear-regression':
         return deserialize_linear_regressor(model_dict)
+    elif model_dict["meta"] == "lasso-regression":
+        return deserialize_lasso_regressor(model_dict)
+    elif model_dict["meta"] == 'elasticnet-regression':
+        return deserialize_elastic_regressor(model_dict)
+    elif model_dict["meta"] == "ridge-regression":
+        return deserialize_ridge_regressor(model_dict)
+    elif model_dict["meta"] == "svr":
+        return deserialize_svr(model_dict)
     else:
         raise ValueError("Model type cannot be found in deserialize_model function. Please implement it!")
 
@@ -98,6 +108,14 @@ def serialize_model(model):
         return serialize_decision_tree_regressor(model)
     elif isinstance(model, LinearRegression):
         return serialize_linear_regressor(model)
+    elif isinstance(model, Lasso):
+        return serialize_lasso_regressor(model)
+    elif isinstance(model, ElasticNet):
+        return serialize_elastic_regressor(model)
+    elif isinstance(model, Ridge):
+        return serialize_ridge_regressor(model)
+    elif isinstance(model, SVR):
+        return serialize_svr(model)
     else:
         raise ValueError("Model type cannot be found in serialize_model function. Please implement it!")
 

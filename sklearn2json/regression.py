@@ -27,7 +27,7 @@ def serialize_linear_regressor(model):
 
 
 def deserialize_linear_regressor(model_dict):
-    model = LinearRegression(model_dict['params'])
+    model = LinearRegression(**model_dict['params'])
     model.singular_ = np.array(model_dict["singular_"])
     model.coef_ = np.array(model_dict['coef_'])
     model._residues = np.float64(model_dict["_residues"])
@@ -42,6 +42,8 @@ def serialize_lasso_regressor(model):
     serialized_model = {
         'meta': 'lasso-regression',
         'coef_': model.coef_.tolist(),
+        "n_features_in_": model.n_features_in_,
+        "dual_gap_":model.dual_gap_,
         'params': model.get_params()
     }
 
@@ -59,7 +61,7 @@ def serialize_lasso_regressor(model):
 
 
 def deserialize_lasso_regressor(model_dict):
-    model = Lasso(model_dict['params'])
+    model = Lasso(**model_dict['params'])
 
     model.coef_ = np.array(model_dict['coef_'])
 
@@ -72,7 +74,8 @@ def deserialize_lasso_regressor(model_dict):
         model.intercept_ = np.array(model_dict['intercept_'])
     else:
         model.intercept_ = float(model_dict['intercept_'])
-
+    model.n_features_in_ = model_dict["n_features_in_"]
+    model.dual_gap_ = np.float64(model_dict["dual_gap_"])
     return model
 
 
@@ -81,6 +84,8 @@ def serialize_elastic_regressor(model):
         'meta': 'elasticnet-regression',
         'coef_': model.coef_.tolist(),
         'alpha': model.alpha,
+        "dual_gap_": model.dual_gap_,
+        "n_features_in_": model.n_features_in_,
         'params': model.get_params()
     }
 
@@ -98,11 +103,11 @@ def serialize_elastic_regressor(model):
 
 
 def deserialize_elastic_regressor(model_dict):
-    model = ElasticNet(model_dict['params'])
-
+    model = ElasticNet(**model_dict['params'])
+    model.n_features_in_ = model_dict["n_features_in_"]
     model.coef_ = np.array(model_dict['coef_'])
-    model.alpha = np.array(model_dict['alpha']).astype(np.float)
-
+    model.alpha = float(model_dict['alpha'])
+    model.dual_gap_ = np.float64(model_dict["dual_gap_"])
     if isinstance(model_dict['n_iter_'], list):
         model.n_iter_ = np.array(model_dict['n_iter_'])
     else:
@@ -119,7 +124,9 @@ def deserialize_elastic_regressor(model_dict):
 def serialize_ridge_regressor(model):
     serialized_model = {
         'meta': 'ridge-regression',
+        "n_features_in_": model.n_features_in_,
         'coef_': model.coef_.tolist(),
+        'n_iter_':model.n_iter_,
         'params': model.get_params()
     }
 
@@ -135,12 +142,14 @@ def serialize_ridge_regressor(model):
 
 
 def deserialize_ridge_regressor(model_dict):
-    model = Ridge(model_dict['params'])
-
+    model = Ridge(**model_dict['params'])
+    model.n_features_in_ = model_dict["n_features_in_"]
     model.coef_ = np.array(model_dict['coef_'])
 
-    if 'n_iter_' in model_dict:
+    if model_dict.get('n_iter_'):
         model.n_iter_ = np.array(model_dict['n_iter_'])
+    else:
+        model.n_iter_ = model_dict['n_iter_']
 
     if isinstance(model_dict['intercept_'], list):
         model.intercept_ = np.array(model_dict['intercept_'])
@@ -190,7 +199,7 @@ def deserialize_svr(model_dict):
 
     model.class_weight_ = np.array(model_dict['class_weight_']).astype(np.float64)
     model.support_ = np.array(model_dict['support_']).astype(np.int32)
-    model.n_support_ = np.array(model_dict['n_support_']).astype(np.int32)
+    model.n_support_ = np.array(model_dict['n_support_'])
     model.intercept_ = np.array(model_dict['intercept_']).astype(np.float64)
     model.probA_ = np.array(model_dict['probA_']).astype(np.float64)
     model.probB_ = np.array(model_dict['probB_']).astype(np.float64)
