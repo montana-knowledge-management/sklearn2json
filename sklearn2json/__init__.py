@@ -5,6 +5,7 @@ from sklearn2json.classification import *
 from sklearn2json.clustering import serialize_dbscan_clustering, deserialize_dbscan_clustering, serialize_k_means, \
     deserialize_k_means
 from sklearn2json.dimension_reduction import serialize_lsa, deserialize_lsa
+from sklearn2json.regression import deserialize_decision_tree_regressor, serialize_decision_tree_regressor
 from sklearn2json.vectorizer import serialize_tfidf, deserialize_tfidf
 from sklearn import discriminant_analysis
 from sklearn.linear_model import LogisticRegression
@@ -12,6 +13,7 @@ from sklearn.ensemble import RandomForestClassifier, GradientBoostingClassifier
 from sklearn.decomposition import TruncatedSVD
 from sklearn.cluster import KMeans, DBSCAN
 from sklearn.naive_bayes import BernoulliNB, GaussianNB, MultinomialNB, ComplementNB
+from sklearn.tree import DecisionTreeRegressor
 
 
 def deserialize_model(model_dict):
@@ -45,6 +47,8 @@ def deserialize_model(model_dict):
         return deserialize_lsa(model_dict)
     elif model_dict["meta"] == "dbscan":
         return deserialize_dbscan_clustering(model_dict)
+    elif model_dict["meta"] == 'decision-tree-regression':
+        return deserialize_decision_tree_regressor(model_dict)
 
 
 def from_json(file_name):
@@ -84,6 +88,8 @@ def serialize_model(model):
         return serialize_lsa(model)
     elif isinstance(model, DBSCAN):
         return serialize_dbscan_clustering(model)
+    elif isinstance(model, DecisionTreeRegressor):
+        return serialize_decision_tree_regressor(model)
 
 
 def to_json(model, model_name):
