@@ -5,7 +5,8 @@ from sklearn2json.classification import *
 from sklearn2json.clustering import serialize_dbscan_clustering, deserialize_dbscan_clustering, serialize_k_means, \
     deserialize_k_means
 from sklearn2json.dimension_reduction import serialize_lsa, deserialize_lsa
-from sklearn2json.regression import deserialize_decision_tree_regressor, serialize_decision_tree_regressor
+from sklearn2json.regression import deserialize_decision_tree_regressor, serialize_decision_tree_regressor, \
+    serialize_linear_regressor, deserialize_linear_regressor
 from sklearn2json.vectorizer import serialize_tfidf, deserialize_tfidf
 from sklearn import discriminant_analysis
 from sklearn.linear_model import LogisticRegression
@@ -14,6 +15,7 @@ from sklearn.decomposition import TruncatedSVD
 from sklearn.cluster import KMeans, DBSCAN
 from sklearn.naive_bayes import BernoulliNB, GaussianNB, MultinomialNB, ComplementNB
 from sklearn.tree import DecisionTreeRegressor
+from sklearn.linear_model import LinearRegression, Lasso, Ridge, ElasticNet
 
 
 def deserialize_model(model_dict):
@@ -49,6 +51,10 @@ def deserialize_model(model_dict):
         return deserialize_dbscan_clustering(model_dict)
     elif model_dict["meta"] == 'decision-tree-regression':
         return deserialize_decision_tree_regressor(model_dict)
+    elif model_dict["meta"] == 'linear-regression':
+        return deserialize_linear_regressor(model_dict)
+    else:
+        raise ValueError("Model type cannot be found in deserialize_model function. Please implement it!")
 
 
 def from_json(file_name):
@@ -90,6 +96,10 @@ def serialize_model(model):
         return serialize_dbscan_clustering(model)
     elif isinstance(model, DecisionTreeRegressor):
         return serialize_decision_tree_regressor(model)
+    elif isinstance(model, LinearRegression):
+        return serialize_linear_regressor(model)
+    else:
+        raise ValueError("Model type cannot be found in serialize_model function. Please implement it!")
 
 
 def to_json(model, model_name):

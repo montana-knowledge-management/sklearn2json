@@ -26,7 +26,7 @@ def helper_test(model):
     print(
         "Missing keys from saved model: {}\n".format(set(model.__dict__.keys()) - set(test_model.__dict__.keys())))
     for key, value in model.__dict__.items():
-        if type(value) != type(test_model.__dict__.get(key)):
+        if not isinstance(value, type(test_model.__dict__.get(key))):
             print(key)
             print(value, test_model.__dict__.get(key))
             print(type(value), type(test_model.__dict__.get(key)))
