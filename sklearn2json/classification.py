@@ -136,6 +136,8 @@ def serialize_complement_nb(model):
         'feature_count_': model.feature_count_.tolist(),
         'feature_log_prob_': model.feature_log_prob_.tolist(),
         'feature_all_': model.feature_all_.tolist(),
+        'n_features_in_': model.n_features_in_,
+        'n_features_': model.n_features_,
         'params': model.get_params()
     }
 
@@ -151,7 +153,8 @@ def deserialize_complement_nb(model_dict):
     model.feature_count_ = np.array(model_dict['feature_count_'])
     model.feature_log_prob_ = np.array(model_dict['feature_log_prob_'])
     model.feature_all_ = np.array(model_dict['feature_all_'])
-
+    model.n_features_ = model_dict['n_features_']
+    model.n_features_in_ = model_dict['n_features_in_']
     return model
 
 
@@ -568,6 +571,7 @@ def serialize_linear_svm(model):
         'classes_': model.classes_.tolist(),
         'intercept_': model.intercept_.tolist(),
         'n_iter_': int(model.n_iter_),
+        'n_features_in_': model.n_features_in_,
         'params': model.get_params()
     }
 
@@ -583,7 +587,8 @@ def deserialize_linear_svm(model_dict):
     model = LinearSVC(**model_dict['params'])
     model.classes_ = np.array(model_dict['classes_'])
     model.intercept_ = np.array(model_dict['intercept_']).astype(np.float64)
-    model.n_iter_ = model_dict['n_iter_']
+    model.n_iter_ = np.int32(model_dict['n_iter_'])
+    model.n_features_in_ = model_dict['n_features_in_']
 
     if 'meta' in model_dict['coef_'] and model_dict['coef_']['meta'] == 'csr':
         model.coef_ = deserialize_csr_matrix(model_dict['coef_'])

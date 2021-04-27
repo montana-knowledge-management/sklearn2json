@@ -1,5 +1,6 @@
 from sklearn.tree import DecisionTreeRegressor
-
+from sklearn.tree._tree import Tree
+import numpy as np
 
 def serialize_tree(tree):
     serialized_tree = tree.__getstate__()
