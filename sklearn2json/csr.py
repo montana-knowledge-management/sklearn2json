@@ -1,6 +1,7 @@
 import scipy as sp
 import numpy as np
 
+
 def serialize_csr_matrix(csr_matrix):
     serialized_csr_matrix = {
         'meta': 'csr',

@@ -3,6 +3,7 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 import sklearn2json
 from os import remove
 
+
 class VectorizerTestCase(unittest.TestCase):
     def test_tfidf_default_settings(self):
         """
