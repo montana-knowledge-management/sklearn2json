@@ -9,11 +9,13 @@ from sklearn2json.regression import deserialize_decision_tree_regressor, seriali
     serialize_linear_regressor, deserialize_linear_regressor, deserialize_lasso_regressor, serialize_lasso_regressor, \
     deserialize_elastic_regressor, serialize_elastic_regressor, deserialize_ridge_regressor, serialize_ridge_regressor, \
     serialize_svr, deserialize_svr, serialize_mlp_regressor, deserialize_mlp_regressor, \
-    deserialize_random_forest_regressor, serialize_random_forest_regressor
+    deserialize_random_forest_regressor, serialize_random_forest_regressor, deserialize_gradient_boosting_regressor, \
+    serialize_gradient_boosting_regressor
 from sklearn2json.vectorizer import serialize_tfidf, deserialize_tfidf
 from sklearn import discriminant_analysis
 from sklearn.linear_model import LogisticRegression
-from sklearn.ensemble import RandomForestClassifier, GradientBoostingClassifier, RandomForestRegressor
+from sklearn.ensemble import RandomForestClassifier, GradientBoostingClassifier, RandomForestRegressor, \
+    GradientBoostingRegressor
 from sklearn.decomposition import TruncatedSVD
 from sklearn.cluster import KMeans, DBSCAN
 from sklearn.naive_bayes import BernoulliNB, GaussianNB, MultinomialNB, ComplementNB
@@ -69,7 +71,8 @@ def deserialize_model(model_dict):
         return deserialize_mlp_regressor(model_dict)
     elif model_dict["meta"] == "rf-regression":
         return deserialize_random_forest_regressor(model_dict)
-
+    elif model_dict["meta"] == 'gb-regression':
+        return deserialize_random_forest_regressor(model_dict)
     else:
         raise ValueError("Model type cannot be found in deserialize_model function. Please implement it!")
 
@@ -127,6 +130,8 @@ def serialize_model(model):
         return serialize_mlp_regressor(model)
     elif isinstance(model, RandomForestRegressor):
         return serialize_random_forest_regressor(model)
+    elif isinstance(model, GradientBoostingRegressor):
+        return serialize_gradient_boosting_regressor(model)
     else:
         raise ValueError("Model type cannot be found in serialize_model function. Please implement it!")
 

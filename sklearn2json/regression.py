@@ -43,7 +43,7 @@ def serialize_lasso_regressor(model):
         'meta': 'lasso-regression',
         'coef_': model.coef_.tolist(),
         "n_features_in_": model.n_features_in_,
-        "dual_gap_":model.dual_gap_,
+        "dual_gap_": model.dual_gap_,
         'params': model.get_params()
     }
 
@@ -126,7 +126,7 @@ def serialize_ridge_regressor(model):
         'meta': 'ridge-regression',
         "n_features_in_": model.n_features_in_,
         'coef_': model.coef_.tolist(),
-        'n_iter_':model.n_iter_,
+        'n_iter_': model.n_iter_,
         'params': model.get_params()
     }
 
@@ -166,10 +166,10 @@ def serialize_svr(model):
         'class_weight_': model.class_weight_.tolist(),
         'support_': model.support_.tolist(),
         "fit_status_": model.fit_status_,
-        'n_support_': model.n_support_.tolist(),
+        '_n_support': model._n_support.tolist(),
         'intercept_': model.intercept_.tolist(),
-        'probA_': model.probA_.tolist(),
-        'probB_': model.probB_.tolist(),
+        '_probA': model._probA.tolist(),
+        '_probB': model._probB.tolist(),
         '_intercept_': model._intercept_.tolist(),
         'shape_fit_': model.shape_fit_,
         '_gamma': model._gamma,
@@ -197,15 +197,15 @@ def serialize_svr(model):
 def deserialize_svr(model_dict):
     model = SVR(**model_dict['params'])
     model.fit_status_ = model_dict['fit_status_']
-    model.shape_fit_ = model_dict['shape_fit_']
+    model.shape_fit_ = tuple(model_dict['shape_fit_'])
     model._gamma = model_dict['_gamma']
     model.n_features_in_ = model_dict["n_features_in_"]
     model.class_weight_ = np.array(model_dict['class_weight_']).astype(np.float64)
     model.support_ = np.array(model_dict['support_']).astype(np.int32)
-    model.n_support_ = np.array(model_dict['n_support_']).astype(np.int32)
+    model._n_support = np.array(model_dict['_n_support']).astype(np.int32)
     model.intercept_ = np.array(model_dict['intercept_']).astype(np.float64)
-    model.probA_ = np.array(model_dict['probA_']).astype(np.float64)
-    model.probB_ = np.array(model_dict['probB_']).astype(np.float64)
+    model._probA = np.array(model_dict['_probA']).astype(np.float64)
+    model._probB = np.array(model_dict['_probB']).astype(np.float64)
     model._intercept_ = np.array(model_dict['_intercept_']).astype(np.float64)
 
     if 'meta' in model_dict['support_vectors_'] and model_dict['support_vectors_']['meta'] == 'csr':
@@ -226,7 +226,6 @@ def deserialize_svr(model_dict):
         model._dual_coef_ = np.array(model_dict['_dual_coef_']).astype(np.float64)
 
     return model
-
 
 
 def serialize_tree(tree):
