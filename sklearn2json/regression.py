@@ -162,8 +162,10 @@ def deserialize_ridge_regressor(model_dict):
 def serialize_svr(model):
     serialized_model = {
         'meta': 'svr',
+        "n_features_in_": model.n_features_in_,
         'class_weight_': model.class_weight_.tolist(),
         'support_': model.support_.tolist(),
+        "fit_status_": model.fit_status_,
         'n_support_': model.n_support_.tolist(),
         'intercept_': model.intercept_.tolist(),
         'probA_': model.probA_.tolist(),
@@ -194,12 +196,13 @@ def serialize_svr(model):
 
 def deserialize_svr(model_dict):
     model = SVR(**model_dict['params'])
+    model.fit_status_ = model_dict['fit_status_']
     model.shape_fit_ = model_dict['shape_fit_']
     model._gamma = model_dict['_gamma']
-
+    model.n_features_in_ = model_dict["n_features_in_"]
     model.class_weight_ = np.array(model_dict['class_weight_']).astype(np.float64)
     model.support_ = np.array(model_dict['support_']).astype(np.int32)
-    model.n_support_ = np.array(model_dict['n_support_'])
+    model.n_support_ = np.array(model_dict['n_support_']).astype(np.int32)
     model.intercept_ = np.array(model_dict['intercept_']).astype(np.float64)
     model.probA_ = np.array(model_dict['probA_']).astype(np.float64)
     model.probB_ = np.array(model_dict['probB_']).astype(np.float64)
@@ -327,6 +330,7 @@ def serialize_random_forest_regressor(model):
         'min_impurity_decrease': model.min_impurity_decrease,
         'min_impurity_split': model.min_impurity_split,
         'n_features_': model.n_features_,
+        'n_features_in_': model.n_features_in_,
         'n_outputs_': model.n_outputs_,
         'estimators_': [serialize_decision_tree_regressor(decision_tree) for decision_tree in model.estimators_],
         'params': model.get_params()
@@ -343,9 +347,10 @@ def serialize_random_forest_regressor(model):
 def deserialize_random_forest_regressor(model_dict):
     model = RandomForestRegressor(**model_dict['params'])
     estimators = [deserialize_decision_tree_regressor(decision_tree) for decision_tree in model_dict['estimators_']]
-    model.estimators_ = np.array(estimators)
-
+    model.estimators_ = estimators
+    model.base_estimator_ = DecisionTreeRegressor()
     model.n_features_ = model_dict['n_features_']
+    model.n_features_in_ = model_dict['n_features_in_']
     model.n_outputs_ = model_dict['n_outputs_']
     model.max_depth = model_dict['max_depth']
     model.min_samples_split = model_dict['min_samples_split']
@@ -367,13 +372,18 @@ def deserialize_random_forest_regressor(model_dict):
 def serialize_mlp_regressor(model):
     serialized_model = {
         'meta': 'mlp-regression',
-        'coefs_': model.coefs_,
-        'loss_': model.loss_,
-        'intercepts_': model.intercepts_,
+        'n_features_in_': model.n_features_in_,
+        'coefs_': [elem.tolist() for elem in model.coefs_],
+        'loss_': float(model.loss_),
+        'intercepts_': [elem.tolist() for elem in model.intercepts_],
         'n_iter_': model.n_iter_,
         'n_layers_': model.n_layers_,
         'n_outputs_': model.n_outputs_,
         'out_activation_': model.out_activation_,
+        "t_": model.t_,
+        "best_loss_": float(model.best_loss_),
+        "loss_curve_": model.loss_curve_,
+        "_no_improvement_count": model._no_improvement_count,
         'params': model.get_params()
     }
 
@@ -382,15 +392,19 @@ def serialize_mlp_regressor(model):
 
 def deserialize_mlp_regressor(model_dict):
     model = MLPRegressor(**model_dict['params'])
-
-    model.coefs_ = model_dict['coefs_']
-    model.loss_ = model_dict['loss_']
-    model.intercepts_ = model_dict['intercepts_']
+    model.n_features_in_ = model_dict['n_features_in_']
+    model.coefs_ = [np.array(elem) for elem in model_dict['coefs_']]
+    model.loss_ = np.float64(model_dict['loss_'])
+    model.intercepts_ = [np.array(elem) for elem in model_dict['intercepts_']]
     model.n_iter_ = model_dict['n_iter_']
     model.n_layers_ = model_dict['n_layers_']
     model.n_outputs_ = model_dict['n_outputs_']
     model.out_activation_ = model_dict['out_activation_']
-
+    model.hidden_layer_sizes = tuple(model.hidden_layer_sizes)
+    model.t_ = model_dict["t_"]
+    model._no_improvement_count = model_dict["_no_improvement_count"]
+    model.best_loss_ = np.float64(model_dict["best_loss_"])
+    model.loss_curve_ = model_dict["loss_curve_"]
     return model
 
 

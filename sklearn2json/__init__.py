@@ -8,16 +8,18 @@ from sklearn2json.dimension_reduction import serialize_lsa, deserialize_lsa
 from sklearn2json.regression import deserialize_decision_tree_regressor, serialize_decision_tree_regressor, \
     serialize_linear_regressor, deserialize_linear_regressor, deserialize_lasso_regressor, serialize_lasso_regressor, \
     deserialize_elastic_regressor, serialize_elastic_regressor, deserialize_ridge_regressor, serialize_ridge_regressor, \
-    serialize_svr, deserialize_svr
+    serialize_svr, deserialize_svr, serialize_mlp_regressor, deserialize_mlp_regressor, \
+    deserialize_random_forest_regressor, serialize_random_forest_regressor
 from sklearn2json.vectorizer import serialize_tfidf, deserialize_tfidf
 from sklearn import discriminant_analysis
 from sklearn.linear_model import LogisticRegression
-from sklearn.ensemble import RandomForestClassifier, GradientBoostingClassifier
+from sklearn.ensemble import RandomForestClassifier, GradientBoostingClassifier, RandomForestRegressor
 from sklearn.decomposition import TruncatedSVD
 from sklearn.cluster import KMeans, DBSCAN
 from sklearn.naive_bayes import BernoulliNB, GaussianNB, MultinomialNB, ComplementNB
 from sklearn.tree import DecisionTreeRegressor
 from sklearn.linear_model import LinearRegression, Lasso, Ridge, ElasticNet
+from sklearn.neural_network import MLPRegressor
 
 
 def deserialize_model(model_dict):
@@ -63,6 +65,11 @@ def deserialize_model(model_dict):
         return deserialize_ridge_regressor(model_dict)
     elif model_dict["meta"] == "svr":
         return deserialize_svr(model_dict)
+    elif model_dict["meta"] == "mlp-regression":
+        return deserialize_mlp_regressor(model_dict)
+    elif model_dict["meta"] == "rf-regression":
+        return deserialize_random_forest_regressor(model_dict)
+
     else:
         raise ValueError("Model type cannot be found in deserialize_model function. Please implement it!")
 
@@ -116,6 +123,10 @@ def serialize_model(model):
         return serialize_ridge_regressor(model)
     elif isinstance(model, SVR):
         return serialize_svr(model)
+    elif isinstance(model, MLPRegressor):
+        return serialize_mlp_regressor(model)
+    elif isinstance(model, RandomForestRegressor):
+        return serialize_random_forest_regressor(model)
     else:
         raise ValueError("Model type cannot be found in serialize_model function. Please implement it!")
 
