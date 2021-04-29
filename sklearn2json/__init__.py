@@ -22,6 +22,7 @@ from sklearn.naive_bayes import BernoulliNB, GaussianNB, MultinomialNB, Compleme
 from sklearn.tree import DecisionTreeRegressor
 from sklearn.linear_model import LinearRegression, Lasso, Ridge, ElasticNet
 from sklearn.neural_network import MLPRegressor
+from sklearn.preprocessing import LabelBinarizer
 
 
 def deserialize_model(model_dict):
@@ -73,6 +74,8 @@ def deserialize_model(model_dict):
         return deserialize_random_forest_regressor(model_dict)
     elif model_dict["meta"] == 'gb-regression':
         return deserialize_gradient_boosting_regressor(model_dict)
+    elif model_dict["meta"] == 'label-binarizer':
+        return deserialize_label_binarizer(model_dict)
     else:
         raise ValueError("Model type cannot be found in deserialize_model function. Please implement it!")
 
@@ -132,6 +135,8 @@ def serialize_model(model):
         return serialize_random_forest_regressor(model)
     elif isinstance(model, GradientBoostingRegressor):
         return serialize_gradient_boosting_regressor(model)
+    elif isinstance(model, LabelBinarizer):
+        return serialize_label_binarizer(model)
     else:
         raise ValueError("Model type cannot be found in serialize_model function. Please implement it!")
 
