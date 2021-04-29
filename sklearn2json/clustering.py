@@ -9,7 +9,6 @@ def serialize_dbscan_clustering(model):
         'core_sample_indices_': model.core_sample_indices_.tolist(),
         'labels_': model.labels_.tolist(),
         'n_features_in_': model.n_features_in_,
-        # '_estimator_type': model._estimator_type,
 
         'params': model.get_params()
     }
@@ -24,7 +23,6 @@ def deserialize_dbscan_clustering(model_dict):
     model.labels_ = np.array(model_dict['labels_'])
     model.core_sample_indices_ = np.array(model_dict['core_sample_indices_'])
     model.n_features_in_ = model_dict['n_features_in_']
-    # model._estimator_type = model_dict['_estimator_type']
 
     return model
 

@@ -1,6 +1,10 @@
 import json
 from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.svm import SVC, LinearSVC, SVR
+
+from sklearn.svm import SVC
+from sklearn.svm import LinearSVC
+from sklearn.svm import SVR
+
 from sklearn2json.classification import serialize_bernoulli_nb
 from sklearn2json.classification import deserialize_bernoulli_nb
 from sklearn2json.classification import deserialize_gaussian_nb
@@ -65,18 +69,41 @@ from sklearn2json.vectorizer import serialize_tfidf
 from sklearn2json.vectorizer import deserialize_tfidf
 
 from sklearn import discriminant_analysis
-from sklearn.ensemble import RandomForestClassifier, GradientBoostingClassifier, RandomForestRegressor, \
-    GradientBoostingRegressor
+
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.ensemble import GradientBoostingClassifier
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.ensemble import GradientBoostingRegressor
+
 from sklearn.decomposition import TruncatedSVD
-from sklearn.cluster import KMeans, DBSCAN
-from sklearn.naive_bayes import BernoulliNB, GaussianNB, MultinomialNB, ComplementNB
+
+from sklearn.cluster import KMeans
+from sklearn.cluster import DBSCAN
+
+from sklearn.naive_bayes import BernoulliNB
+from sklearn.naive_bayes import GaussianNB
+from sklearn.naive_bayes import MultinomialNB
+from sklearn.naive_bayes import ComplementNB
+
 from sklearn.tree import DecisionTreeRegressor
-from sklearn.linear_model import LinearRegression, Lasso, Ridge, ElasticNet, LogisticRegression, Perceptron
-from sklearn.neural_network import MLPRegressor, MLPClassifier
-from sklearn.preprocessing import LabelBinarizer
-from sklearn2json.csr import serialize_csr_matrix, deserialize_csr_matrix
-from scipy.sparse import csr_matrix
 from sklearn.tree import DecisionTreeClassifier
+
+from sklearn.linear_model import LinearRegression
+from sklearn.linear_model import Lasso
+from sklearn.linear_model import Ridge
+from sklearn.linear_model import ElasticNet
+from sklearn.linear_model import LogisticRegression
+from sklearn.linear_model import Perceptron
+
+from sklearn.neural_network import MLPRegressor
+from sklearn.neural_network import MLPClassifier
+
+from sklearn.preprocessing import LabelBinarizer
+
+from sklearn2json.csr import serialize_csr_matrix
+from sklearn2json.csr import deserialize_csr_matrix
+
+from scipy.sparse import csr_matrix
 
 
 def deserialize_model(model_dict):
