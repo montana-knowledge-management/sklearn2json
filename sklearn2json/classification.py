@@ -467,10 +467,16 @@ def serialize_mlp(model):
         'loss_': model.loss_,
         'intercepts_': [array.tolist() for array in model.intercepts_],
         'n_iter_': model.n_iter_,
+        't_': model.t_,
+        "loss_curve_":model.loss_curve_,
         'n_layers_': model.n_layers_,
+        "_no_improvement_count":model._no_improvement_count,
         'n_outputs_': model.n_outputs_,
         'out_activation_': model.out_activation_,
+        "n_features_in_": model.n_features_in_,
+        "best_loss_": float(model.best_loss_),
         '_label_binarizer': serialize_label_binarizer(model._label_binarizer),
+        "hidden_layer_sizes": model.hidden_layer_sizes,
         'params': model.get_params()
     }
 
@@ -484,10 +490,15 @@ def serialize_mlp(model):
 
 def deserialize_mlp(model_dict):
     model = MLPClassifier(**model_dict['params'])
-
-    model.coefs_ = np.array(model_dict['coefs_'])
+    model.hidden_layer_sizes = tuple(model_dict["hidden_layer_sizes"])
+    model.n_features_in_ = model_dict["n_features_in_"]
+    model.coefs_ = [np.array(elem) for elem in model_dict['coefs_']]
+    model.intercepts_ = [np.array(elem) for elem in model_dict['intercepts_']]
     model.loss_ = model_dict['loss_']
-    model.intercepts_ = np.array(model_dict['intercepts_'])
+    model._no_improvement_count = model_dict["_no_improvement_count"]
+    model.best_loss_ = np.float64(model_dict["best_loss_"])
+    model.t_ = model_dict["t_"]
+    model.loss_curve_ = model_dict["loss_curve_"]
     model.n_iter_ = model_dict['n_iter_']
     model.n_layers_ = model_dict['n_layers_']
     model.n_outputs_ = model_dict['n_outputs_']

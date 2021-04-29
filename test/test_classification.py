@@ -115,3 +115,7 @@ class ClassificationTestCase(unittest.TestCase):
     def test_to_json_from_json_perceptron(self):
         model = Perceptron()
         self.test_base(model, exclude_keys=["loss_function_"])
+
+    def test_to_json_from_json_mlp(self):
+        model = MLPClassifier()
+        self.test_base(model, exclude_keys=["_random_state", "_optimizer"])
