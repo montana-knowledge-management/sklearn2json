@@ -138,7 +138,7 @@ def serialize_complement_nb(model):
         'feature_all_': model.feature_all_.tolist(),
         'n_features_in_': model.n_features_in_,
         'n_features_': model.n_features_,
-        'params': model.get_params()
+        'params': model.get_params(),
     }
 
     return serialized_model
