@@ -3,6 +3,10 @@ image: python:3.8
 clone:
   depth: full              # SonarCloud scanner needs the full history to assign issues properly
 
+services:
+  docker:
+    memory: 2560
+
 definitions:
   caches:
     sonar: ~/.sonar/cache  # Caching SonarCloud artifacts will speed up your build
@@ -19,8 +23,7 @@ definitions:
           # get packages
           - python3 -m pip install --upgrade pip
           #- pip install https://github.com/oroszgy/spacy-hungarian-models/releases/download/hu_core_ud_lg-0.3.1/hu_core_ud_lg-0.3.1-py3-none-any.whl
-          - pip3 install flake8 pytest pytest-cov -r requirements.txt
-          - python3 -m pytest
+          - pip3 install pytest pytest-cov -r requirements.txt
           - python3 -m pytest --cov=sklearn2json --cov-report xml:coverage-reports/coverage-all.xml
 
           #- ************************** # Build your project and run
