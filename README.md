@@ -1,44 +1,54 @@
-# sklearn2json
+## Sklearn2JSON
 
-Export scikit-learn model files to JSON for sharing or deploying predictive models with peace of mind.
+Python library for converting Scikit-Learn models to JSON.
 
-## Why sklearn2json?
+## Why Sklearn2JSON?
 
-Other methods for exporting scikit-learn models uses Pickle or Joblib (based on Pickle).
+Scikit-learn has an integrated function to export models. This functionality is depends on the Pickle or Joblib (based
+on Pickle) libraries.
 
 Serializing model files with Pickle provide a simple attack vector for malicious users-- they give an attacker the
-ability to execute arbitrary code wherever the file is deserialized. (![For an example]:https://www.smartfile.com/blog/python-pickle-security-problems-and-solutions/).
+ability to execute arbitrary code wherever the file is
+deserialized. (![For an example]:https://www.smartfile.com/blog/python-pickle-security-problems-and-solutions/).
 
-sklearn-json is a safe and transparent solution for exporting scikit-learn model files. Safe
+Sklearn2JSON is a safe and transparent solution for exporting scikit-learn model files. Safe
 
 Export model files to 100% JSON which cannot execute code on deserialization. Transparent
 
-Model files are serialized in JSON (i.e., not binary), so you have the ability to see exactly what's inside. Getting
-Started
+Model files are serialized in JSON (i.e., not binary), so you have the ability to see exactly what's inside.
 
-sklearn-json makes exporting model files to JSON simple. Install
+## Install
 
-pip install sklearn-json
+    pip install sklearn2json
 
-Example Usage
+## Example Usage
 
-import sklearn_json as skljson from sklearn.ensemble import RandomForestClassifier
+    import sklearn2json as sk 
+    from sklearn.ensemble import RandomForestClassifier
 
-model = RandomForestClassifier(n_estimators=10, max_depth=5, random_state=0).fit(X, y)
+    model = RandomForestClassifier(n_estimators=10, max_depth=5, random_state=0).fit(X, y)
 
-skljson.to_json(model, file_name)
-deserialized_model = skljson.from_json(file_name)
+    sk.to_json(model, file_name)
+    deserialized_model = sk.from_json(file_name)
 
-deserialized_model.predict(X)
+    deserialized_model.predict(X)
 
-Features
+## Features
 
-The list of supported models is rapidly growing. If you have a request for a model or feature, please reach out to
-support@mlrequest.com.
+The list of supported models is growing. If you have a request for a model or feature, please reach out to
+sklearn2json@docutent.org.
 
-sklearn-json requires scikit-learn >= 0.21.3. Supported scikit-learn Models
+## License
 
-    Classification
+SkLearn2JSON is licensed under the terms and conditions of the GNU Affero General Public License, Version 3.0.
+
+If you would like to use SkLearn2PMML in a proprietary software project, then it is possible to enter into a licensing
+agreement which makes SkLearn2PMML available under the terms and conditions of the BSD 3-Clause License instead.
+
+## Supported scikit-learn Models
+
+* **Classification**
+
         sklearn.linear_model.LogisticRegression
         sklearn.linear_model.Perceptron
         sklearn.discriminant_analysis.LinearDiscriminantAnalysis
@@ -53,7 +63,8 @@ sklearn-json requires scikit-learn >= 0.21.3. Supported scikit-learn Models
         sklearn.ensemble.GradientBoostingClassifier
         sklearn.neural_network.MLPClassifier
 
-    Regression
+* **Regression**
+
         sklearn.linear_model.LinearRegression
         sklearn.linear_model.Ridge
         sklearn.linear_model.Lasso
