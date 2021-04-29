@@ -1,11 +1,13 @@
 import unittest
-
-import unittest
-from sklearn.preprocessing import LabelBinarizer
+import numpy as np
 import sklearn2json
+from scipy.sparse import csr_matrix
 from os import remove
 
-labels = [1, 2, 6, 4, 2, 3, 6, 4, 2, 3, 5]
+row = np.array([0, 1, 2, 0])
+col = np.array([0, 1, 1, 0])
+data = np.array([1, 2, 4, 8])
+matrix = csr_matrix((data, (row, col)), shape=(3, 3))
 
 
 def helper_test(model):
@@ -27,12 +29,8 @@ def helper_test(model):
 
 
 class CsrTestCase(unittest.TestCase):
-    def test_base(self, model=LabelBinarizer(), labels=labels, exclude_keys=[]):
-        model.fit(labels)
-        model, test_model = helper_test(model)
-        self.assertEqual(model.get_params(), test_model.get_params())
-        self.assertEqual(set(model.__dict__.keys() - exclude_keys), set(test_model.__dict__.keys()))
+    def test_csr_matrix(self, matrix=matrix, exclude_keys=[]):
+        model, test_model = helper_test(matrix)
+        self.assertListEqual(model.toarray().tolist(), test_model.toarray().tolist())
         remove("model.json")
         return model, test_model
-
-

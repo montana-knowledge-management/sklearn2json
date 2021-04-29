@@ -1,7 +1,13 @@
 import json
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.svm import SVC, LinearSVC, SVR
-from sklearn2json.classification import *
+from sklearn2json.classification import serialize_bernoulli_nb, deserialize_bernoulli_nb, deserialize_gaussian_nb, \
+    serialize_gaussian_nb, deserialize_complement_nb, serialize_complement_nb, deserialize_multinomial_nb, \
+    serialize_multinomial_nb, serialize_linear_svm, deserialize_linear_svm, deserialize_gradient_boosting, \
+    serialize_gradient_boosting, serialize_gradient_boosting_dummy_classifier, serialize_svm, deserialize_svm, \
+    deserialize_random_forest, serialize_random_forest, serialize_lda, deserialize_lda, serialize_qda, deserialize_qda, \
+    deserialize_logistic_regression, serialize_logistic_regression
+from sklearn2json.label_encoders import deserialize_label_binarizer, serialize_label_binarizer
 from sklearn2json.clustering import serialize_dbscan_clustering, deserialize_dbscan_clustering, serialize_k_means, \
     deserialize_k_means
 from sklearn2json.dimension_reduction import serialize_lsa, deserialize_lsa
@@ -23,7 +29,8 @@ from sklearn.tree import DecisionTreeRegressor
 from sklearn.linear_model import LinearRegression, Lasso, Ridge, ElasticNet
 from sklearn.neural_network import MLPRegressor
 from sklearn.preprocessing import LabelBinarizer
-
+from sklearn2json.csr import serialize_csr_matrix, deserialize_csr_matrix
+from scipy.sparse import csr_matrix
 
 def deserialize_model(model_dict):
     if model_dict['meta'] == 'svm':
@@ -76,6 +83,8 @@ def deserialize_model(model_dict):
         return deserialize_gradient_boosting_regressor(model_dict)
     elif model_dict["meta"] == 'label-binarizer':
         return deserialize_label_binarizer(model_dict)
+    elif model_dict["meta"] == 'csr':
+        return deserialize_csr_matrix(model_dict)
     else:
         raise ValueError("Model type cannot be found in deserialize_model function. Please implement it!")
 
@@ -137,6 +146,8 @@ def serialize_model(model):
         return serialize_gradient_boosting_regressor(model)
     elif isinstance(model, LabelBinarizer):
         return serialize_label_binarizer(model)
+    elif isinstance(model, csr_matrix):
+        return serialize_csr_matrix(model)
     else:
         raise ValueError("Model type cannot be found in serialize_model function. Please implement it!")
 
