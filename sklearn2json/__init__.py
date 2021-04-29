@@ -28,6 +28,8 @@ from sklearn2json.classification import serialize_perceptron
 from sklearn2json.classification import deserialize_perceptron
 from sklearn2json.classification import serialize_mlp
 from sklearn2json.classification import deserialize_mlp
+from sklearn2json.classification import serialize_decision_tree
+from sklearn2json.classification import deserialize_decision_tree
 
 from sklearn2json.label_encoders import deserialize_label_binarizer
 from sklearn2json.label_encoders import serialize_label_binarizer
@@ -74,6 +76,7 @@ from sklearn.neural_network import MLPRegressor, MLPClassifier
 from sklearn.preprocessing import LabelBinarizer
 from sklearn2json.csr import serialize_csr_matrix, deserialize_csr_matrix
 from scipy.sparse import csr_matrix
+from sklearn.tree import DecisionTreeClassifier
 
 
 def deserialize_model(model_dict):
@@ -133,6 +136,8 @@ def deserialize_model(model_dict):
         return deserialize_perceptron(model_dict)
     elif model_dict["meta"] == 'mlp':
         return deserialize_mlp(model_dict)
+    elif model_dict["meta"] == 'decision-tree':
+        return deserialize_decision_tree(model_dict)
     else:
         raise ValueError("Model type cannot be found in deserialize_model function. Please implement it!")
 
@@ -200,6 +205,8 @@ def serialize_model(model):
         return serialize_perceptron(model)
     elif isinstance(model, MLPClassifier):
         return serialize_mlp(model)
+    elif isinstance(model, DecisionTreeClassifier):
+        return serialize_decision_tree(model)
     else:
         raise ValueError("Model type cannot be found in serialize_model function. Please implement it!")
 
