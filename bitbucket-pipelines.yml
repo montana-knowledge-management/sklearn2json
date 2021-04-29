@@ -22,13 +22,12 @@ definitions:
           - source env/bin/activate
           - pip install pytest pytest-cov -r requirements.txt
           - python3 -m pytest --cov=sklearn2json --cov-report xml:coverage-reports/coverage-all.xml
-
           #- ************************** # Build your project and run
           - pipe: sonarsource/sonarcloud-scan:1.2.1
-    - variables:
-         #SONAR_SCANNER_OPTS: -Xmx2500m
-         EXTRA_ARGS: "-Dsonar.sources=./sklearn2json/"
-         DEBUG: 'false'
+            variables:
+            #SONAR_SCANNER_OPTS: -Xmx2500m
+            EXTRA_ARGS: "-Dsonar.sources=./sklearn2json/**"
+            DEBUG: 'true'
     - step: &check-quality-gate-sonarcloud
         name: Check the Quality Gate on SonarCloud
         script:
