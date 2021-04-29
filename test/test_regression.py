@@ -6,6 +6,7 @@ from sklearn.linear_model import LinearRegression, Lasso, Ridge, ElasticNet
 from sklearn.neural_network import MLPRegressor
 from sklearn.svm import SVR
 from sklearn.ensemble import RandomForestRegressor, GradientBoostingRegressor
+from test.helper_test import print_differences
 
 input_x = [[0, 2, 1],
            [3, 3, 3],
@@ -19,28 +20,10 @@ additional_input_x = [[10, 20, 5]]
 additional_output_y = [9]
 
 
-def helper_test(model):
-    # save data
-    sklearn2json.to_json(model, "model.json")
-
-    # load the saved matrix from the saved object
-    test_model = sklearn2json.from_json("model.json")
-    print(
-        "Missing keys from saved model: {}\n".format(set(model.__dict__.keys()) - set(test_model.__dict__.keys())))
-    for key, value in model.__dict__.items():
-        if not isinstance(value, type(test_model.__dict__.get(key))):
-            print(
-                "Key name: {}\n"
-                "Original value:{}; Saved reloaded value: {}\n"
-                "Original type:{}; Saved reloaded type: {}".format(key, value, test_model.__dict__.get(key),
-                                                                   type(value), type(test_model.__dict__.get(key))))
-    return model, test_model
-
-
 class RegressionTestCase(unittest.TestCase):
     def test_base(self, model=DecisionTreeRegressor(), X=input_x, y=output_y, new_x=new_x, exclude_keys=[]):
         model.fit(X, y)
-        model, test_model = helper_test(model)
+        model, test_model = print_differences(model)
         self.assertEqual(model.get_params(), test_model.get_params())
         self.assertEqual(set(model.__dict__.keys() - exclude_keys), set(test_model.__dict__.keys()))
         self.assertEqual(model.predict(new_x), test_model.predict(new_x))
@@ -49,7 +32,7 @@ class RegressionTestCase(unittest.TestCase):
 
     def test_with_training(self, model=DecisionTreeRegressor(), X=input_x, y=output_y, new_x=new_x):
         model.fit(X, y)
-        model, test_model = helper_test(model)
+        model, test_model = print_differences(model)
         self.assertEqual(model.get_params(), test_model.get_params())
         self.assertEqual(set(model.__dict__.keys()), set(test_model.__dict__.keys()))
         self.assertEqual(model.predict(new_x), test_model.predict(new_x))
@@ -57,7 +40,7 @@ class RegressionTestCase(unittest.TestCase):
         # Training
         model.fit(additional_input_x, additional_output_y)
         test_model.fit(additional_input_x, additional_output_y)
-        model, test_model = helper_test(model)
+        model, test_model = print_differences(model)
         self.assertEqual(model.get_params(), test_model.get_params())
         self.assertEqual(set(model.__dict__.keys()), set(test_model.__dict__.keys()))
         self.assertEqual(model.predict(new_x), test_model.predict(new_x))

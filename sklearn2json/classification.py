@@ -34,7 +34,8 @@ def deserialize_logistic_regression(model_dict):
     model.coef_ = np.array(model_dict['coef_'])
     model.intercept_ = np.array(model_dict['intercept_'])
     model.n_iter_ = np.array(model_dict['intercept_'])
-    model.n_features_in_ = model_dict['n_features_in_']
+    if model_dict.get('n_features_in_'):
+        model.n_features_in_ = model_dict['n_features_in_']
     return model
 
 
@@ -63,7 +64,8 @@ def deserialize_bernoulli_nb(model_dict):
     model.feature_count_ = np.array(model_dict['feature_count_'])
     model.feature_log_prob_ = np.array(model_dict['feature_log_prob_'])
     model.n_features_ = model_dict['n_features_']
-    model.n_features_in_ = model_dict['n_features_in_']
+    if model_dict.get('n_features_in_'):
+        model.n_features_in_ = model_dict['n_features_in_']
 
     return model
 
@@ -93,7 +95,8 @@ def deserialize_gaussian_nb(model_dict):
     model.theta_ = np.array(model_dict['theta_'])
     model.sigma_ = np.array(model_dict['sigma_'])
     model.epsilon_ = np.float64(model_dict['epsilon_'])
-    model.n_features_in_ = model_dict['n_features_in_']
+    if model_dict.get('n_features_in_'):
+        model.n_features_in_ = model_dict['n_features_in_']
 
     return model
 
@@ -123,7 +126,8 @@ def deserialize_multinomial_nb(model_dict):
     model.feature_count_ = np.array(model_dict['feature_count_'])
     model.feature_log_prob_ = np.array(model_dict['feature_log_prob_'])
     model.n_features_ = model_dict['n_features_']
-    model.n_features_in_ = model_dict['n_features_in_']
+    if model_dict.get('n_features_in_'):
+        model.n_features_in_ = model_dict['n_features_in_']
     return model
 
 
@@ -154,7 +158,8 @@ def deserialize_complement_nb(model_dict):
     model.feature_log_prob_ = np.array(model_dict['feature_log_prob_'])
     model.feature_all_ = np.array(model_dict['feature_all_'])
     model.n_features_ = model_dict['n_features_']
-    model.n_features_in_ = model_dict['n_features_in_']
+    if model_dict.get('n_features_in_'):
+        model.n_features_in_ = model_dict['n_features_in_']
     return model
 
 
@@ -190,7 +195,8 @@ def deserialize_lda(model_dict):
     model.scalings_ = np.array(model_dict['scalings_']).astype(np.float64)
     model.xbar_ = np.array(model_dict['xbar_']).astype(np.float64)
     model.classes_ = np.array(model_dict['classes_']).astype(np.int64)
-    model.n_features_in_ = model_dict['n_features_in_']
+    if model_dict.get('n_features_in_'):
+        model.n_features_in_ = model_dict['n_features_in_']
     model._max_components = model_dict['_max_components']
 
     return model
@@ -224,7 +230,8 @@ def deserialize_qda(model_dict):
         model.rotations_ = [np.array(scale_line).astype(np.float64) for scale_line in model_dict['rotations_']]
     # model.rotations_ = np.array(model_dict['rotations_']).astype(np.float64)
     model.classes_ = np.array(model_dict['classes_']).astype(np.int64)
-    model.n_features_in_ = model_dict['n_features_in_']
+    if model_dict.get('n_features_in_'):
+        model.n_features_in_ = model_dict['n_features_in_']
 
     return model
 
@@ -285,7 +292,8 @@ def deserialize_decision_tree(model_dict):
     deserialized_model.max_features_ = model_dict['max_features_']
     deserialized_model.n_classes_ = np.int64(model_dict['n_classes_'])
     deserialized_model.n_features_ = model_dict['n_features_']
-    deserialized_model.n_features_in_ = model_dict['n_features_in_']
+    if model_dict.get('n_features_in_'):
+        deserialized_model.n_features_in_ = model_dict['n_features_in_']
     deserialized_model.n_outputs_ = model_dict['n_outputs_']
 
     tree = deserialize_tree(model_dict['tree_'], model_dict['n_features_'], model_dict['n_classes_'],
@@ -352,7 +360,8 @@ def deserialize_gradient_boosting(model_dict):
     model.n_classes_ = model_dict['n_classes_']
     model.train_score_ = np.array(model_dict['train_score_'])
     model.max_features_ = model_dict['max_features_']
-    model.n_features_in_ = model_dict['n_features_in_']
+    if model_dict.get('n_features_in_'):
+        model.n_features_in_ = model_dict['n_features_in_']
     model._n_classes = model_dict['_n_classes']
     model.n_features_ = model_dict['n_features_']
     model.n_estimators_ = model_dict['n_estimators_']
@@ -408,7 +417,8 @@ def deserialize_random_forest(model_dict):
     model.base_estimator_ = DecisionTreeClassifier()
     model.classes_ = np.array(model_dict['classes_'])
     model.n_features_ = model_dict['n_features_']
-    model.n_features_in_ = model_dict['n_features_in_']
+    if model_dict.get('n_features_in_'):
+        model.n_features_in_ = model_dict['n_features_in_']
     model.n_outputs_ = model_dict['n_outputs_']
     model.max_depth = model_dict['max_depth']
     model.min_samples_split = model_dict['min_samples_split']
@@ -518,7 +528,7 @@ def serialize_svm(model):
         'class_weight_': model.class_weight_.tolist(),
         'classes_': model.classes_.tolist(),
         'support_': model.support_.tolist(),
-        'n_support_': model._n_support.tolist(),
+        '_n_support': model._n_support.tolist(),
         'intercept_': model.intercept_.tolist(),
         'probA_': model._probA.tolist(),
         'probB_': model._probB.tolist(),
@@ -552,12 +562,13 @@ def deserialize_svm(model_dict):
     model = SVC(**model_dict['params'])
     model.shape_fit_ = tuple(model_dict['shape_fit_'])
     model.fit_status_ = model_dict['fit_status_']
-    model.n_features_in_ = model_dict['n_features_in_']
+    if model_dict.get('n_features_in_'):
+        model.n_features_in_ = model_dict['n_features_in_']
     model._gamma = np.float64(model_dict['_gamma'])
     model.class_weight_ = np.array(model_dict['class_weight_']).astype(np.float64)
     model.classes_ = np.array(model_dict['classes_'])
     model.support_ = np.array(model_dict['support_']).astype(np.int32)
-    model._n_support = np.array(model_dict['n_support_']).astype(np.int32)
+    model._n_support = np.array(model_dict['_n_support']).astype(np.int32)
     model.intercept_ = np.array(model_dict['intercept_']).astype(np.float64)
     model._probA = np.array(model_dict['probA_']).astype(np.float64)
     model._probB = np.array(model_dict['probB_']).astype(np.float64)
@@ -605,7 +616,9 @@ def deserialize_linear_svm(model_dict):
     model.classes_ = np.array(model_dict['classes_'])
     model.intercept_ = np.array(model_dict['intercept_']).astype(np.float64)
     model.n_iter_ = np.int32(model_dict['n_iter_'])
-    model.n_features_in_ = model_dict['n_features_in_']
+
+    if model_dict.get('n_features_in_'):
+        model.n_features_in_ = model_dict['n_features_in_']
 
     if 'meta' in model_dict['coef_'] and model_dict['coef_']['meta'] == 'csr':
         model.coef_ = deserialize_csr_matrix(model_dict['coef_'])

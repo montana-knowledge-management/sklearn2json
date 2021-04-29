@@ -1,6 +1,5 @@
 import unittest
 from sklearn.svm import SVC, LinearSVC
-import sklearn2json
 from os import remove
 from sklearn.linear_model import LogisticRegression, Perceptron
 from sklearn.tree import DecisionTreeClassifier
@@ -9,6 +8,7 @@ from sklearn import svm, discriminant_analysis, dummy
 from sklearn.ensemble import RandomForestClassifier, GradientBoostingClassifier, _gb_losses
 from sklearn.naive_bayes import BernoulliNB, GaussianNB, MultinomialNB, ComplementNB
 from sklearn.neural_network import MLPClassifier
+from test.helper_test import print_differences
 
 X = [[0, 2, 1],
      [3, 3, 3],
@@ -17,27 +17,11 @@ y = [0, 1, 1]
 new_x = [[0, 0, 0]]
 
 
-def helper_test(model):
-    # save data
-    sklearn2json.to_json(model, "model.json")
-
-    # load the saved matrix from the saved object
-    test_model = sklearn2json.from_json("model.json")
-    print(
-        "Missing keys from saved model: {}\n".format(set(model.__dict__.keys()) - set(test_model.__dict__.keys())))
-    for key, value in model.__dict__.items():
-        if not isinstance(value, type(test_model.__dict__.get(key))):
-            print(key)
-            print(value, test_model.__dict__.get(key))
-            print(type(value), type(test_model.__dict__.get(key)))
-    return model, test_model
-
-
 class ClassificationTestCase(unittest.TestCase):
     def test_base(self, model=discriminant_analysis.LinearDiscriminantAnalysis(), X=X, y=y, new_x=new_x,
                   exclude_keys=[]):
         model.fit(X, y)
-        model, test_model = helper_test(model)
+        model, test_model = print_differences(model)
         self.assertEqual(model.get_params(), test_model.get_params())
         self.assertEqual(set(model.__dict__.keys() - exclude_keys), set(test_model.__dict__.keys()))
         self.assertEqual(model.predict(new_x), test_model.predict(new_x))

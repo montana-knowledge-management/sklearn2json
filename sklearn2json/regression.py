@@ -33,7 +33,8 @@ def deserialize_linear_regressor(model_dict):
     model._residues = np.float64(model_dict["_residues"])
     model.intercept_ = np.float64(model_dict['intercept_'])
     model.rank_ = model_dict["rank_"]
-    model.n_features_in_ = model_dict["n_features_in_"]
+    if model_dict.get("n_features_in_"):
+        model.n_features_in_ = model_dict["n_features_in_"]
     model.fit_intercept = model_dict["fit_intercept"]
     return model
 
@@ -74,7 +75,8 @@ def deserialize_lasso_regressor(model_dict):
         model.intercept_ = np.array(model_dict['intercept_'])
     else:
         model.intercept_ = float(model_dict['intercept_'])
-    model.n_features_in_ = model_dict["n_features_in_"]
+    if model_dict.get("n_features_in_"):
+        model.n_features_in_ = model_dict["n_features_in_"]
     model.dual_gap_ = np.float64(model_dict["dual_gap_"])
     return model
 
@@ -104,7 +106,8 @@ def serialize_elastic_regressor(model):
 
 def deserialize_elastic_regressor(model_dict):
     model = ElasticNet(**model_dict['params'])
-    model.n_features_in_ = model_dict["n_features_in_"]
+    if model_dict.get("n_features_in_"):
+        model.n_features_in_ = model_dict["n_features_in_"]
     model.coef_ = np.array(model_dict['coef_'])
     model.alpha = float(model_dict['alpha'])
     model.dual_gap_ = np.float64(model_dict["dual_gap_"])
@@ -143,7 +146,8 @@ def serialize_ridge_regressor(model):
 
 def deserialize_ridge_regressor(model_dict):
     model = Ridge(**model_dict['params'])
-    model.n_features_in_ = model_dict["n_features_in_"]
+    if model_dict.get("n_features_in_"):
+        model.n_features_in_ = model_dict["n_features_in_"]
     model.coef_ = np.array(model_dict['coef_'])
 
     if model_dict.get('n_iter_'):
@@ -199,7 +203,8 @@ def deserialize_svr(model_dict):
     model.fit_status_ = model_dict['fit_status_']
     model.shape_fit_ = tuple(model_dict['shape_fit_'])
     model._gamma = model_dict['_gamma']
-    model.n_features_in_ = model_dict["n_features_in_"]
+    if model_dict.get("n_features_in_"):
+        model.n_features_in_ = model_dict["n_features_in_"]
     model.class_weight_ = np.array(model_dict['class_weight_']).astype(np.float64)
     model.support_ = np.array(model_dict['support_']).astype(np.int32)
     model._n_support = np.array(model_dict['_n_support']).astype(np.int32)
@@ -303,7 +308,8 @@ def deserialize_gradient_boosting_regressor(model_dict):
         model.init_ = dummy.DummyRegressor()
         model.init_.__dict__ = model_dict['init_']
         model.init_.__dict__.pop('meta')
-    model.n_features_in_ = model_dict["n_features_in_"]
+    if model_dict.get("n_features_in_"):
+        model.n_features_in_ = model_dict["n_features_in_"]
     model.n_estimators_ = model_dict["n_estimators_"]
     model.train_score_ = np.array(model_dict['train_score_'])
     model.max_features_ = model_dict['max_features_']
@@ -354,7 +360,8 @@ def deserialize_random_forest_regressor(model_dict):
     model.estimators_ = estimators
     model.base_estimator_ = DecisionTreeRegressor()
     model.n_features_ = model_dict['n_features_']
-    model.n_features_in_ = model_dict['n_features_in_']
+    if model_dict.get('n_features_in_'):
+        model.n_features_in_ = model_dict['n_features_in_']
     model.n_outputs_ = model_dict['n_outputs_']
     model.max_depth = model_dict['max_depth']
     model.min_samples_split = model_dict['min_samples_split']
@@ -396,7 +403,8 @@ def serialize_mlp_regressor(model):
 
 def deserialize_mlp_regressor(model_dict):
     model = MLPRegressor(**model_dict['params'])
-    model.n_features_in_ = model_dict['n_features_in_']
+    if model_dict.get('n_features_in_'):
+        model.n_features_in_ = model_dict['n_features_in_']
     model.coefs_ = [np.array(elem) for elem in model_dict['coefs_']]
     model.loss_ = np.float64(model_dict['loss_'])
     model.intercepts_ = [np.array(elem) for elem in model_dict['intercepts_']]
@@ -439,7 +447,8 @@ def deserialize_decision_tree_regressor(model_dict):
     deserialized_decision_tree.max_features_ = model_dict['max_features_']
     deserialized_decision_tree.n_features_ = model_dict['n_features_']
     deserialized_decision_tree.n_outputs_ = model_dict['n_outputs_']
-    deserialized_decision_tree.n_features_in_ = model_dict['n_features_in_']
+    if model_dict.get("n_features_in_"):
+        deserialized_decision_tree.n_features_in_ = model_dict['n_features_in_']
     tree = deserialize_tree(model_dict['tree_'], model_dict['n_features_'], 1, model_dict['n_outputs_'])
     deserialized_decision_tree.tree_ = tree
 
