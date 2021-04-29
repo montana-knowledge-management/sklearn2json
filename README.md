@@ -13,11 +13,11 @@ Serializing model files with Pickle provide a simple attack vector for malicious
 ability to execute arbitrary code wherever the file is
 deserialized. (![For an example]:https://www.smartfile.com/blog/python-pickle-security-problems-and-solutions/).
 
-Sklearn2JSON is a safe and transparent solution for exporting scikit-learn model files. 
+Sklearn2JSON is a safe and transparent solution for exporting scikit-learn model files.
 
 ### Safe
 
-Export model files to 100% JSON which cannot execute code on deserialization. 
+Export model files to 100% JSON which cannot execute code on deserialization.
 
 ### Transparent
 
@@ -25,10 +25,12 @@ Model files are serialized in JSON (i.e., not binary), so you have the ability t
 
 ## Install
 
-    pip install sklearn2json
-
+```
+pip install sklearn2json
+```
 ## Example Usage
 
+```
     import sklearn2json as sk 
     from sklearn.ensemble import RandomForestClassifier
 
@@ -38,6 +40,7 @@ Model files are serialized in JSON (i.e., not binary), so you have the ability t
     deserialized_model = sk.from_json(file_name)
 
     deserialized_model.predict(X)
+```
 
 ## Features
 
@@ -63,27 +66,31 @@ contact [info@docutent.org](mailto:info@docutent.org)
 
 * **Classification**
 
-        sklearn.linear_model.LogisticRegression
-        sklearn.linear_model.Perceptron
-        sklearn.discriminant_analysis.LinearDiscriminantAnalysis
-        sklearn.discriminant_analysis.QuadraticDiscriminantAnalysis
-        sklearn.svm.SVC
-        sklearn.naive_bayes.GaussianNB
-        sklearn.naive_bayes.MultinomialNB
-        sklearn.naive_bayes.ComplementNB
-        sklearn.naive_bayes.BernoulliNB
-        sklearn.tree.DecisionTreeClassifier
-        sklearn.ensemble.RandomForestClassifier
-        sklearn.ensemble.GradientBoostingClassifier
-        sklearn.neural_network.MLPClassifier
+```
+  sklearn.linear_model.LogisticRegression
+  sklearn.linear_model.Perceptron
+  sklearn.discriminant_analysis.LinearDiscriminantAnalysis
+  sklearn.discriminant_analysis.QuadraticDiscriminantAnalysis
+  sklearn.svm.SVC
+  sklearn.naive_bayes.GaussianNB
+  sklearn.naive_bayes.MultinomialNB
+  sklearn.naive_bayes.ComplementNB
+  sklearn.naive_bayes.BernoulliNB
+  sklearn.tree.DecisionTreeClassifier
+  sklearn.ensemble.RandomForestClassifier
+  sklearn.ensemble.GradientBoostingClassifier
+  sklearn.neural_network.MLPClassifier
+```
 
 * **Regression**
 
-        sklearn.linear_model.LinearRegression
-        sklearn.linear_model.Ridge
-        sklearn.linear_model.Lasso
-        sklearn.svm.SVR
-        sklearn.tree.DecisionTreeRegressor
-        sklearn.ensemble.RandomForestRegressor
-        sklearn.ensemble.GradientBoostingRegressor
-        sklearn.neural_network.MLPRegressor
+```
+  sklearn.linear_model.LinearRegression
+  sklearn.linear_model.Ridge
+  sklearn.linear_model.Lasso
+  sklearn.svm.SVR
+  sklearn.tree.DecisionTreeRegressor
+  sklearn.ensemble.RandomForestRegressor
+  sklearn.ensemble.GradientBoostingRegressor
+  sklearn.neural_network.MLPRegressor
+```
