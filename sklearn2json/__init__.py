@@ -15,8 +15,6 @@ from sklearn.cluster import KMeans, DBSCAN
 from sklearn.naive_bayes import BernoulliNB, GaussianNB, MultinomialNB, ComplementNB
 from sklearn.tree import DecisionTreeRegressor
 
-__version__ = "2021.4.beta"
-
 
 def deserialize_model(model_dict):
     if model_dict['meta'] == 'svm':
