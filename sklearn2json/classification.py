@@ -436,7 +436,10 @@ def serialize_perceptron(model):
         'coef_': model.coef_.tolist(),
         'intercept_': model.intercept_.tolist(),
         'n_iter_': model.n_iter_,
+        't_': model.t_,
+        "_expanded_class_weight": model._expanded_class_weight.tolist(),
         'classes_': model.classes_.tolist(),
+        "n_features_in_": model.n_features_in_,
         'params': model.get_params()
     }
     if 'covariance_' in model.__dict__:
@@ -447,12 +450,13 @@ def serialize_perceptron(model):
 
 def deserialize_perceptron(model_dict):
     model = Perceptron(**model_dict['params'])
-
+    model.n_features_in_ = model_dict["n_features_in_"]
+    model.t_ = model_dict["t_"]
     model.coef_ = np.array(model_dict['coef_']).astype(np.float64)
     model.intercept_ = np.array(model_dict['intercept_']).astype(np.float64)
-    model.n_iter_ = np.array(model_dict['n_iter_']).astype(np.float64)
+    model.n_iter_ = model_dict['n_iter_']
     model.classes_ = np.array(model_dict['classes_']).astype(np.int64)
-
+    model._expanded_class_weight = np.array(model_dict["_expanded_class_weight"])
     return model
 
 

@@ -34,11 +34,11 @@ def helper_test(model):
 
 
 class ClassificationTestCase(unittest.TestCase):
-    def test_base(self, model=discriminant_analysis.LinearDiscriminantAnalysis(), X=X, y=y, new_x=new_x):
+    def test_base(self, model=discriminant_analysis.LinearDiscriminantAnalysis(), X=X, y=y, new_x=new_x, exclude_keys=[]):
         model.fit(X, y)
         model, test_model = helper_test(model)
         self.assertEqual(model.get_params(), test_model.get_params())
-        self.assertEqual(set(model.__dict__.keys()), set(test_model.__dict__.keys()))
+        self.assertEqual(set(model.__dict__.keys()-exclude_keys), set(test_model.__dict__.keys()))
         self.assertEqual(model.predict(new_x), test_model.predict(new_x))
         remove("model.json")
         return model, test_model
@@ -105,18 +105,13 @@ class ClassificationTestCase(unittest.TestCase):
 
     def test_to_json_from_json_gradient_boosting(self):
         model = GradientBoostingClassifier()
-        X = [[0, 2, 1],
-             [3, 3, 3],
-             [1, 1, 1]]
-        y = [0, 1, 1]
-        new_x = [[0, 0, 0]]
-        model.fit(X, y)
-        model, test_model = helper_test(model)
-        self.assertEqual(model.get_params(), test_model.get_params())
-        self.assertEqual(set(model.__dict__.keys()) - {"_rng"}, set(test_model.__dict__.keys()))
-        self.assertEqual(model.predict(new_x), test_model.predict(new_x))
-        remove("model.json")
+        self.test_base(model, exclude_keys=["_rng"])
+
 
     def test_to_json_from_json_random_forest(self):
         model = RandomForestClassifier()
         self.test_base(model)
+
+    def test_to_json_from_json_perceptron(self):
+        model = Perceptron()
+        self.test_base(model, exclude_keys=["loss_function_"])
