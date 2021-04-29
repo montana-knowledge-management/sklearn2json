@@ -1,19 +1,108 @@
 import json
 from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.svm import SVC, LinearSVC
-from sklearn2json.classification import *
-from sklearn2json.clustering import serialize_dbscan_clustering, deserialize_dbscan_clustering, serialize_k_means, \
-    deserialize_k_means
-from sklearn2json.dimension_reduction import serialize_lsa, deserialize_lsa
-from sklearn2json.regression import deserialize_decision_tree_regressor, serialize_decision_tree_regressor
-from sklearn2json.vectorizer import serialize_tfidf, deserialize_tfidf
+
+from sklearn.svm import SVC
+from sklearn.svm import LinearSVC
+from sklearn.svm import SVR
+
+from sklearn2json.classification import serialize_bernoulli_nb
+from sklearn2json.classification import deserialize_bernoulli_nb
+from sklearn2json.classification import deserialize_gaussian_nb
+from sklearn2json.classification import serialize_gaussian_nb
+from sklearn2json.classification import deserialize_complement_nb
+from sklearn2json.classification import serialize_complement_nb
+from sklearn2json.classification import deserialize_multinomial_nb
+from sklearn2json.classification import serialize_multinomial_nb
+from sklearn2json.classification import serialize_linear_svm
+from sklearn2json.classification import deserialize_linear_svm
+from sklearn2json.classification import deserialize_gradient_boosting
+from sklearn2json.classification import serialize_gradient_boosting
+from sklearn2json.classification import serialize_svm
+from sklearn2json.classification import deserialize_svm
+from sklearn2json.classification import deserialize_random_forest
+from sklearn2json.classification import serialize_random_forest
+from sklearn2json.classification import serialize_lda
+from sklearn2json.classification import deserialize_lda
+from sklearn2json.classification import serialize_qda
+from sklearn2json.classification import deserialize_qda
+from sklearn2json.classification import deserialize_logistic_regression
+from sklearn2json.classification import serialize_logistic_regression
+from sklearn2json.classification import serialize_perceptron
+from sklearn2json.classification import deserialize_perceptron
+from sklearn2json.classification import serialize_mlp
+from sklearn2json.classification import deserialize_mlp
+from sklearn2json.classification import serialize_decision_tree
+from sklearn2json.classification import deserialize_decision_tree
+
+from sklearn2json.label_encoders import deserialize_label_binarizer
+from sklearn2json.label_encoders import serialize_label_binarizer
+
+from sklearn2json.clustering import serialize_dbscan_clustering
+from sklearn2json.clustering import deserialize_dbscan_clustering
+from sklearn2json.clustering import serialize_k_means
+from sklearn2json.clustering import deserialize_k_means
+
+from sklearn2json.dimension_reduction import serialize_lsa
+from sklearn2json.dimension_reduction import deserialize_lsa
+
+from sklearn2json.regression import deserialize_decision_tree_regressor
+from sklearn2json.regression import serialize_decision_tree_regressor
+from sklearn2json.regression import serialize_linear_regressor
+from sklearn2json.regression import deserialize_linear_regressor
+from sklearn2json.regression import deserialize_lasso_regressor
+from sklearn2json.regression import serialize_lasso_regressor
+from sklearn2json.regression import deserialize_elastic_regressor
+from sklearn2json.regression import serialize_elastic_regressor
+from sklearn2json.regression import deserialize_ridge_regressor
+from sklearn2json.regression import serialize_ridge_regressor
+from sklearn2json.regression import serialize_svr
+from sklearn2json.regression import deserialize_svr
+from sklearn2json.regression import serialize_mlp_regressor
+from sklearn2json.regression import deserialize_mlp_regressor
+from sklearn2json.regression import deserialize_random_forest_regressor
+from sklearn2json.regression import serialize_random_forest_regressor
+from sklearn2json.regression import deserialize_gradient_boosting_regressor
+from sklearn2json.regression import serialize_gradient_boosting_regressor
+
+from sklearn2json.vectorizer import serialize_tfidf
+from sklearn2json.vectorizer import deserialize_tfidf
+
 from sklearn import discriminant_analysis
-from sklearn.linear_model import LogisticRegression
-from sklearn.ensemble import RandomForestClassifier, GradientBoostingClassifier
+
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.ensemble import GradientBoostingClassifier
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.ensemble import GradientBoostingRegressor
+
 from sklearn.decomposition import TruncatedSVD
-from sklearn.cluster import KMeans, DBSCAN
-from sklearn.naive_bayes import BernoulliNB, GaussianNB, MultinomialNB, ComplementNB
+
+from sklearn.cluster import KMeans
+from sklearn.cluster import DBSCAN
+
+from sklearn.naive_bayes import BernoulliNB
+from sklearn.naive_bayes import GaussianNB
+from sklearn.naive_bayes import MultinomialNB
+from sklearn.naive_bayes import ComplementNB
+
 from sklearn.tree import DecisionTreeRegressor
+from sklearn.tree import DecisionTreeClassifier
+
+from sklearn.linear_model import LinearRegression
+from sklearn.linear_model import Lasso
+from sklearn.linear_model import Ridge
+from sklearn.linear_model import ElasticNet
+from sklearn.linear_model import LogisticRegression
+from sklearn.linear_model import Perceptron
+
+from sklearn.neural_network import MLPRegressor
+from sklearn.neural_network import MLPClassifier
+
+from sklearn.preprocessing import LabelBinarizer
+
+from sklearn2json.csr import serialize_csr_matrix
+from sklearn2json.csr import deserialize_csr_matrix
+
+from scipy.sparse import csr_matrix
 
 
 def deserialize_model(model_dict):
@@ -49,6 +138,34 @@ def deserialize_model(model_dict):
         return deserialize_dbscan_clustering(model_dict)
     elif model_dict["meta"] == 'decision-tree-regression':
         return deserialize_decision_tree_regressor(model_dict)
+    elif model_dict["meta"] == 'linear-regression':
+        return deserialize_linear_regressor(model_dict)
+    elif model_dict["meta"] == "lasso-regression":
+        return deserialize_lasso_regressor(model_dict)
+    elif model_dict["meta"] == 'elasticnet-regression':
+        return deserialize_elastic_regressor(model_dict)
+    elif model_dict["meta"] == "ridge-regression":
+        return deserialize_ridge_regressor(model_dict)
+    elif model_dict["meta"] == "svr":
+        return deserialize_svr(model_dict)
+    elif model_dict["meta"] == "mlp-regression":
+        return deserialize_mlp_regressor(model_dict)
+    elif model_dict["meta"] == "rf-regression":
+        return deserialize_random_forest_regressor(model_dict)
+    elif model_dict["meta"] == 'gb-regression':
+        return deserialize_gradient_boosting_regressor(model_dict)
+    elif model_dict["meta"] == 'label-binarizer':
+        return deserialize_label_binarizer(model_dict)
+    elif model_dict["meta"] == 'csr':
+        return deserialize_csr_matrix(model_dict)
+    elif model_dict["meta"] == 'perceptron':
+        return deserialize_perceptron(model_dict)
+    elif model_dict["meta"] == 'mlp':
+        return deserialize_mlp(model_dict)
+    elif model_dict["meta"] == 'decision-tree':
+        return deserialize_decision_tree(model_dict)
+    else:
+        raise ValueError("Model type cannot be found in deserialize_model function. Please implement it!")
 
 
 def from_json(file_name):
@@ -90,6 +207,34 @@ def serialize_model(model):
         return serialize_dbscan_clustering(model)
     elif isinstance(model, DecisionTreeRegressor):
         return serialize_decision_tree_regressor(model)
+    elif isinstance(model, LinearRegression):
+        return serialize_linear_regressor(model)
+    elif isinstance(model, Lasso):
+        return serialize_lasso_regressor(model)
+    elif isinstance(model, ElasticNet):
+        return serialize_elastic_regressor(model)
+    elif isinstance(model, Ridge):
+        return serialize_ridge_regressor(model)
+    elif isinstance(model, SVR):
+        return serialize_svr(model)
+    elif isinstance(model, MLPRegressor):
+        return serialize_mlp_regressor(model)
+    elif isinstance(model, RandomForestRegressor):
+        return serialize_random_forest_regressor(model)
+    elif isinstance(model, GradientBoostingRegressor):
+        return serialize_gradient_boosting_regressor(model)
+    elif isinstance(model, LabelBinarizer):
+        return serialize_label_binarizer(model)
+    elif isinstance(model, csr_matrix):
+        return serialize_csr_matrix(model)
+    elif isinstance(model, Perceptron):
+        return serialize_perceptron(model)
+    elif isinstance(model, MLPClassifier):
+        return serialize_mlp(model)
+    elif isinstance(model, DecisionTreeClassifier):
+        return serialize_decision_tree(model)
+    else:
+        raise ValueError("Model type cannot be found in serialize_model function. Please implement it!")
 
 
 def to_json(model, model_name):

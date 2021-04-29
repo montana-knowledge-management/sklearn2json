@@ -4,6 +4,7 @@ from sklearn.preprocessing import LabelBinarizer
 
 def serialize_label_binarizer(label_binarizer):
     serialized_label_binarizer = {
+        "meta": "label-binarizer",
         'neg_label': label_binarizer.neg_label,
         'pos_label': label_binarizer.pos_label,
         'sparse_output': label_binarizer.sparse_output,
