@@ -7,7 +7,8 @@ Python library for converting Scikit-Learn models to JSON.
 ## Why Sklearn2JSON?
 
 Scikit-learn has an integrated function to export models. This functionality is depends on the Pickle or Joblib (based
-on Pickle) libraries.
+on Pickle) libraries. One main problem with this solution is that these solutions freezes the machine learning classes as it is. 
+Therefore if you have a production code or a two years old model 
 
 Serializing model files with Pickle provide a simple attack vector for malicious users-- they give an attacker the
 ability to execute arbitrary code wherever the file is

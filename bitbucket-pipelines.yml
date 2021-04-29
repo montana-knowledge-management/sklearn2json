@@ -20,11 +20,8 @@ definitions:
           # create environment
           - python3 -m venv env
           - source env/bin/activate
-          # get packages
-          - python3 -m pip install --upgrade pip
-          #- pip install https://github.com/oroszgy/spacy-hungarian-models/releases/download/hu_core_ud_lg-0.3.1/hu_core_ud_lg-0.3.1-py3-none-any.whl
-          - pip3 install pytest pytest-cov -r requirements.txt
-          - python3 -m pytest --cov=sklearn2json --cov-report xml:coverage-reports/coverage-all.xml
+          - pip install pytest pytest-cov -r requirements.txt
+          - python3 -m pytest --cov=sklearn2json/sklearn2json --cov-report xml:coverage-reports/coverage-all.xml
 
           #- ************************** # Build your project and run
           - pipe: sonarsource/sonarcloud-scan:1.2.1
