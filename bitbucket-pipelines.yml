@@ -25,7 +25,7 @@ definitions:
           #- ************************** # Build your project and run
           - pipe: sonarsource/sonarcloud-scan:1.2.1
             variables:
-            #SONAR_SCANNER_OPTS: -Xmx2500m
+            SONAR_SCANNER_OPTS: -Xmx2500m
             EXTRA_ARGS: "-Dsonar.sources=./sklearn2json/**"
             DEBUG: 'true'
     - step: &check-quality-gate-sonarcloud
