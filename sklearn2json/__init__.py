@@ -17,7 +17,6 @@ from sklearn2json.classification import serialize_linear_svm
 from sklearn2json.classification import deserialize_linear_svm
 from sklearn2json.classification import deserialize_gradient_boosting
 from sklearn2json.classification import serialize_gradient_boosting
-from sklearn2json.classification import serialize_gradient_boosting_dummy_classifier
 from sklearn2json.classification import serialize_svm
 from sklearn2json.classification import deserialize_svm
 from sklearn2json.classification import deserialize_random_forest

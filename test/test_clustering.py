@@ -15,8 +15,10 @@ new_x = [[0, 1, 2]]
 
 
 class ClusteringTestCase(unittest.TestCase):
-    def test_base(self, model=KMeans(n_clusters=2), X=input_x, exclude_keys=[]):
-        model.fit(X)
+    def base(self, model, x_input, exclude_keys=None):
+        if not exclude_keys:
+            exclude_keys = []
+        model.fit(x_input)
         model, test_model = print_differences(model)
         self.assertEqual(model.get_params(), test_model.get_params())
         self.assertEqual(set(model.__dict__.keys() - exclude_keys), set(test_model.__dict__.keys()))
@@ -25,10 +27,10 @@ class ClusteringTestCase(unittest.TestCase):
 
     def test_to_json_from_json_kmeans(self):
         model = KMeans(n_clusters=2)
-        model, test_model = self.test_base(model)
+        model, test_model = self.base(model, input_x)
         self.assertEqual(model.predict(new_x), test_model.predict(new_x))
 
     def test_to_json_from_json_dbscan(self):
         model = DBSCAN()
-        model, test_model = self.test_base(model)
+        model, test_model = self.base(model, input_x)
         self.assertListEqual(model.fit_predict(new_x).tolist(), test_model.fit_predict(new_x).tolist())

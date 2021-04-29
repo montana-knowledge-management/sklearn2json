@@ -11,7 +11,7 @@ matrix = csr_matrix((data, (row, col)), shape=(3, 3))
 
 
 class CsrTestCase(unittest.TestCase):
-    def test_csr_matrix(self, model=matrix, exclude_keys=[]):
+    def test_csr_matrix(self, model=matrix):
         model, test_model = print_differences(model)
         self.assertListEqual(model.toarray().tolist(), test_model.toarray().tolist())
         remove("model.json")
