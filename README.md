@@ -11,9 +11,13 @@ Serializing model files with Pickle provide a simple attack vector for malicious
 ability to execute arbitrary code wherever the file is
 deserialized. (![For an example]:https://www.smartfile.com/blog/python-pickle-security-problems-and-solutions/).
 
-Sklearn2JSON is a safe and transparent solution for exporting scikit-learn model files. Safe
+Sklearn2JSON is a safe and transparent solution for exporting scikit-learn model files. 
 
-Export model files to 100% JSON which cannot execute code on deserialization. Transparent
+### Safe
+
+Export model files to 100% JSON which cannot execute code on deserialization. 
+
+### Transparent
 
 Model files are serialized in JSON (i.e., not binary), so you have the ability to see exactly what's inside.
 
@@ -38,12 +42,20 @@ Model files are serialized in JSON (i.e., not binary), so you have the ability t
 The list of supported models is growing. If you have a request for a model or feature, please reach out to
 sklearn2json@docutent.org.
 
-## License
-
-SkLearn2JSON is licensed under the terms and conditions of the GNU Affero General Public License, Version 3.0.
+SkLearn2PMML is licensed under the terms and conditions of
+the [GNU Affero General Public License, Version 3.0](https://www.gnu.org/licenses/agpl-3.0.html).
 
 If you would like to use SkLearn2PMML in a proprietary software project, then it is possible to enter into a licensing
-agreement which makes SkLearn2PMML available under the terms and conditions of the BSD 3-Clause License instead.
+agreement which makes SkLearn2PMML available under the terms and conditions of
+the [BSD 3-Clause License](https://opensource.org/licenses/BSD-3-Clause) instead.
+
+# Additional information #
+
+The concept of the project is based on the sklearn-json project SkLearn2JSON is developed and maintained by MONTANA
+Knowledge Management LTD, Hungary.
+
+Interested in using [Docutent](https://github.com/docutent) software in your company? Please
+contact [info@docutent.org](mailto:info@docutent.org)
 
 ## Supported scikit-learn Models
 
