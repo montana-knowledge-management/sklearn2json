@@ -72,7 +72,7 @@ def deserialize_model(model_dict):
     elif model_dict["meta"] == "rf-regression":
         return deserialize_random_forest_regressor(model_dict)
     elif model_dict["meta"] == 'gb-regression':
-        return deserialize_random_forest_regressor(model_dict)
+        return deserialize_gradient_boosting_regressor(model_dict)
     else:
         raise ValueError("Model type cannot be found in deserialize_model function. Please implement it!")
 

@@ -263,6 +263,8 @@ def serialize_gradient_boosting_regressor(model):
         'meta': 'gb-regression',
         'max_features_': model.max_features_,
         'n_features_': model.n_features_,
+        "n_estimators_": model.n_estimators_,
+        'n_features_in_': model.n_features_in_,
         'train_score_': model.train_score_.tolist(),
         'params': model.get_params(),
         'estimators_shape': list(model.estimators_.shape),
@@ -271,6 +273,7 @@ def serialize_gradient_boosting_regressor(model):
 
     if isinstance(model.init_, dummy.DummyRegressor):
         serialized_model['init_'] = serialize_dummy_regressor(model.init_)
+        serialized_model['init_']["constant_"] = serialized_model['init_']["constant_"].tolist()
         serialized_model['init_']['meta'] = 'dummy'
     elif isinstance(model.init_, str):
         serialized_model['init_'] = model.init_
@@ -300,14 +303,15 @@ def deserialize_gradient_boosting_regressor(model_dict):
         model.init_ = dummy.DummyRegressor()
         model.init_.__dict__ = model_dict['init_']
         model.init_.__dict__.pop('meta')
-
+    model.n_features_in_ = model_dict["n_features_in_"]
+    model.n_estimators_ = model_dict["n_estimators_"]
     model.train_score_ = np.array(model_dict['train_score_'])
     model.max_features_ = model_dict['max_features_']
     model.n_features_ = model_dict['n_features_']
     if model_dict['loss_'] == 'ls':
-        model.loss_ = _gb_losses.LeastSquaresError(1)
+        model.loss_ = _gb_losses.LeastSquaresError()
     elif model_dict['loss_'] == 'lad':
-        model.loss_ = _gb_losses.LeastAbsoluteError(1)
+        model.loss_ = _gb_losses.LeastAbsoluteError()
     elif model_dict['loss_'] == 'huber':
         model.loss_ = _gb_losses.HuberLossFunction(1)
     elif model_dict['loss_'] == 'quantile':

@@ -99,6 +99,6 @@ class RegressionTestCase(unittest.TestCase):
 
     def test_to_json_from_json_gradient_boosting_regressor(self):
         model = GradientBoostingRegressor()
-        self.test_base(model)
+        self.test_base(model,exclude_keys=["_rng"])
 
     # def test_serilaize_tree(self):
