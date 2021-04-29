@@ -28,9 +28,9 @@ definitions:
           #      EXTRA_ARGS: '-Dsonar.sources=sklearn2json/utilssrc/performance' # include only if its not part of a directory  -Dsonar.tests=utils/test'
           #      DEBUG: 'false'
           - pipe: sonarsource/sonarcloud-scan:1.2.1
-              variables:
-                EXTRA_ARGS: "-Dsonar.sources=./sklearn2json/**"
-                DEBUG: 'true'
+            variables:
+              EXTRA_ARGS: "-Dsonar.sources=sklearn2json/sklearn2json"
+              DEBUG: 'true'
     - step: &check-quality-gate-sonarcloud
         name: Check the Quality Gate on SonarCloud
         script:
