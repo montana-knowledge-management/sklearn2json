@@ -1,64 +1,97 @@
-# sklearn2json
+[![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://GitHub.com/Naereen/StrapDown.js/graphs/commit-activity)
 
-Export scikit-learn model files to JSON for sharing or deploying predictive models with peace of mind.
+## Sklearn2JSON
 
-## Why sklearn2json?
+Python library for converting Scikit-Learn models to JSON.
 
-Other methods for exporting scikit-learn models uses Pickle or Joblib (based on Pickle).
+## Why Sklearn2JSON?
+
+Scikit-learn has an integrated function to export models. This functionality is depends on the Pickle or Joblib (based
+on Pickle) libraries. One main problem with this solution is that these solutions freezes the machine learning classes as it is. 
+Therefore if you have a production code or a two years old model 
 
 Serializing model files with Pickle provide a simple attack vector for malicious users-- they give an attacker the
-ability to execute arbitrary code wherever the file is deserialized. (![For an example]:https://www.smartfile.com/blog/python-pickle-security-problems-and-solutions/).
+ability to execute arbitrary code wherever the file is
+deserialized. (![For an example]:https://www.smartfile.com/blog/python-pickle-security-problems-and-solutions/).
 
-sklearn-json is a safe and transparent solution for exporting scikit-learn model files. Safe
+Sklearn2JSON is a safe and transparent solution for exporting scikit-learn model files.
 
-Export model files to 100% JSON which cannot execute code on deserialization. Transparent
+### Safe
 
-Model files are serialized in JSON (i.e., not binary), so you have the ability to see exactly what's inside. Getting
-Started
+Export model files to 100% JSON which cannot execute code on deserialization.
 
-sklearn-json makes exporting model files to JSON simple. Install
+### Transparent
 
-pip install sklearn-json
+Model files are serialized in JSON (i.e., not binary), so you have the ability to see exactly what's inside.
 
-Example Usage
+## Install
 
-import sklearn_json as skljson from sklearn.ensemble import RandomForestClassifier
+```
+pip install sklearn2json
+```
+## Example Usage
 
-model = RandomForestClassifier(n_estimators=10, max_depth=5, random_state=0).fit(X, y)
+```
+    import sklearn2json as sk 
+    from sklearn.ensemble import RandomForestClassifier
 
-skljson.to_json(model, file_name)
-deserialized_model = skljson.from_json(file_name)
+    model = RandomForestClassifier(n_estimators=10, max_depth=5, random_state=0).fit(X, y)
 
-deserialized_model.predict(X)
+    sk.to_json(model, file_name)
+    deserialized_model = sk.from_json(file_name)
 
-Features
+    deserialized_model.predict(X)
+```
 
-The list of supported models is rapidly growing. If you have a request for a model or feature, please reach out to
-support@mlrequest.com.
+## Features
 
-sklearn-json requires scikit-learn >= 0.21.3. Supported scikit-learn Models
+The list of supported models is growing. If you have a request for a model or feature, please reach out to
+sklearn2json@docutent.org.
 
-    Classification
-        sklearn.linear_model.LogisticRegression
-        sklearn.linear_model.Perceptron
-        sklearn.discriminant_analysis.LinearDiscriminantAnalysis
-        sklearn.discriminant_analysis.QuadraticDiscriminantAnalysis
-        sklearn.svm.SVC
-        sklearn.naive_bayes.GaussianNB
-        sklearn.naive_bayes.MultinomialNB
-        sklearn.naive_bayes.ComplementNB
-        sklearn.naive_bayes.BernoulliNB
-        sklearn.tree.DecisionTreeClassifier
-        sklearn.ensemble.RandomForestClassifier
-        sklearn.ensemble.GradientBoostingClassifier
-        sklearn.neural_network.MLPClassifier
+SkLearn2PMML is licensed under the terms and conditions of
+the [GNU Affero General Public License, Version 3.0](https://www.gnu.org/licenses/agpl-3.0.html).
 
-    Regression
-        sklearn.linear_model.LinearRegression
-        sklearn.linear_model.Ridge
-        sklearn.linear_model.Lasso
-        sklearn.svm.SVR
-        sklearn.tree.DecisionTreeRegressor
-        sklearn.ensemble.RandomForestRegressor
-        sklearn.ensemble.GradientBoostingRegressor
-        sklearn.neural_network.MLPRegressor
+If you would like to use SkLearn2PMML in a proprietary software project, then it is possible to enter into a licensing
+agreement which makes SkLearn2PMML available under the terms and conditions of
+the [BSD 3-Clause License](https://opensource.org/licenses/BSD-3-Clause) instead.
+
+# Additional information #
+
+The concept of the project is based on the sklearn-json project SkLearn2JSON is developed and maintained by MONTANA
+Knowledge Management LTD, Hungary.
+
+Interested in using [Docutent](https://github.com/docutent) software in your company? Please
+contact [info@docutent.org](mailto:info@docutent.org)
+
+## Supported scikit-learn Models
+
+* **Classification**
+
+```
+  sklearn.linear_model.LogisticRegression
+  sklearn.linear_model.Perceptron
+  sklearn.discriminant_analysis.LinearDiscriminantAnalysis
+  sklearn.discriminant_analysis.QuadraticDiscriminantAnalysis
+  sklearn.svm.SVC
+  sklearn.naive_bayes.GaussianNB
+  sklearn.naive_bayes.MultinomialNB
+  sklearn.naive_bayes.ComplementNB
+  sklearn.naive_bayes.BernoulliNB
+  sklearn.tree.DecisionTreeClassifier
+  sklearn.ensemble.RandomForestClassifier
+  sklearn.ensemble.GradientBoostingClassifier
+  sklearn.neural_network.MLPClassifier
+```
+
+* **Regression**
+
+```
+  sklearn.linear_model.LinearRegression
+  sklearn.linear_model.Ridge
+  sklearn.linear_model.Lasso
+  sklearn.svm.SVR
+  sklearn.tree.DecisionTreeRegressor
+  sklearn.ensemble.RandomForestRegressor
+  sklearn.ensemble.GradientBoostingRegressor
+  sklearn.neural_network.MLPRegressor
+```

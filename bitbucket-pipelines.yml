@@ -1,0 +1,43 @@
+image: python:3.8
+
+clone:
+  depth: full              # SonarCloud scanner needs the full history to assign issues properly
+
+services:
+  docker:
+    memory: 2560
+
+definitions:
+  caches:
+    sonar: ~/.sonar/cache  # Caching SonarCloud artifacts will speed up your build
+  steps:
+    - step: &build-test-sonarcloud
+        name: Build, test and analyze on SonarCloud
+        caches:
+          - docker # See https://confluence.atlassian.com/bitbucket/caching-dependencies-895552876.html
+          - sonar
+        script:
+          # create environment
+          - python3 -m venv env
+          - source env/bin/activate
+          - pip install pytest pytest-cov -r requirements.txt
+          - python3 -m pytest --cov=sklearn2json --cov-report xml:coverage-reports/coverage-all.xml
+          #- ************************** # Build your project and run
+          - pipe: sonarsource/sonarcloud-scan:1.2.1
+            variables:
+            SONAR_SCANNER_OPTS: -Xmx2500m
+            EXTRA_ARGS: "-Dsonar.sources=./sklearn2json/**"
+            DEBUG: 'true'
+    - step: &check-quality-gate-sonarcloud
+        name: Check the Quality Gate on SonarCloud
+        script:
+          - pipe: sonarsource/sonarcloud-quality-gate:0.1.4
+
+pipelines:
+  default:
+    - step: *build-test-sonarcloud
+    - step: *check-quality-gate-sonarcloud
+  pull-requests:
+    '**':
+      - step: *build-test-sonarcloud
+      - step: *check-quality-gate-sonarcloud
