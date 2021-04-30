@@ -16,8 +16,6 @@ from sklearn.svm import LinearSVC
 from sklearn.svm import SVC
 from sklearn.tree import DecisionTreeClassifier
 
-# from sklearn.tree._tree import Tree
-
 input_x = [[0, 2, 1], [3, 3, 3], [1, 1, 1]]
 output_y = [0, 1, 1]
 new_x = [[0, 0, 0]]
