@@ -13,13 +13,18 @@ def print_differences(model):
 
     # load the saved matrix from the saved object
     test_model = sklearn2json.from_json("model.json")
-    print(
-        "Missing keys from saved model: {}\n".format(set(model.__dict__.keys()) - set(test_model.__dict__.keys())))
+    print("Missing keys from saved model: {}\n".format(set(model.__dict__.keys()) - set(test_model.__dict__.keys())))
     for key, value in model.__dict__.items():
         if not isinstance(value, type(test_model.__dict__.get(key))):
             print(
                 "Key name: {}\n"
                 "Original value:{}; Saved reloaded value: {}\n"
-                "Original type:{}; Saved reloaded type: {}".format(key, value, test_model.__dict__.get(key),
-                                                                   type(value), type(test_model.__dict__.get(key))))
+                "Original type:{}; Saved reloaded type: {}".format(
+                    key,
+                    value,
+                    test_model.__dict__.get(key),
+                    type(value),
+                    type(test_model.__dict__.get(key)),
+                )
+            )
     return model, test_model

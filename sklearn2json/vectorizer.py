@@ -10,8 +10,7 @@ def serialize_tfidf(model):
     :return: dictionary containing the TfidfVectorizer model parameters and attributes
     """
     serialized_model = {
-        'meta': 'tfidf',
-
+        "meta": "tfidf",
         "vocabulary_": model.vocabulary_,
         "fixed_vocabulary_": model.fixed_vocabulary_,
         "encoding": model.encoding,
@@ -32,12 +31,12 @@ def serialize_tfidf(model):
         "norm": model.norm,
         "use_idf": model.use_idf,
         "smooth_idf": model.smooth_idf,
-        "sublinear_tf": model.sublinear_tf
+        "sublinear_tf": model.sublinear_tf,
     }
     if model.use_idf:
-        serialized_model.update({'idf_': model.idf_.tolist()})
+        serialized_model.update({"idf_": model.idf_.tolist()})
     if not model.vocabulary:
-        serialized_model.update({'stop_words_': list(model.stop_words_)})
+        serialized_model.update({"stop_words_": list(model.stop_words_)})
     return serialized_model
 
 

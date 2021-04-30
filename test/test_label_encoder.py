@@ -21,5 +21,7 @@ class LabelEncoderTestCase(unittest.TestCase):
         model = LabelBinarizer()
         model, test_model = self.base(model, labels)
         self.assertListEqual(model.classes_.tolist(), test_model.classes_.tolist())
-        self.assertListEqual(model.transform(model.classes_.tolist()).tolist(),
-                             test_model.transform(model.classes_.tolist()).tolist())
+        self.assertListEqual(
+            model.transform(model.classes_.tolist()).tolist(),
+            test_model.transform(model.classes_.tolist()).tolist(),
+        )

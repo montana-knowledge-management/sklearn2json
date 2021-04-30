@@ -106,29 +106,29 @@ from scipy.sparse import csr_matrix
 
 
 def deserialize_model(model_dict):
-    if model_dict['meta'] == 'svm':
+    if model_dict["meta"] == "svm":
         return deserialize_svm(model_dict)
-    elif model_dict['meta'] == 'tfidf':
+    elif model_dict["meta"] == "tfidf":
         return deserialize_tfidf(model_dict)
-    elif model_dict['meta'] == 'multinomial-nb':
+    elif model_dict["meta"] == "multinomial-nb":
         return deserialize_multinomial_nb(model_dict)
     elif model_dict["meta"] == "linear_svm":
         return deserialize_linear_svm(model_dict)
-    elif model_dict['meta'] == 'bernoulli-nb':
+    elif model_dict["meta"] == "bernoulli-nb":
         return deserialize_bernoulli_nb(model_dict)
-    elif model_dict['meta'] == 'gaussian-nb':
+    elif model_dict["meta"] == "gaussian-nb":
         return deserialize_gaussian_nb(model_dict)
-    elif model_dict['meta'] == 'complement-nb':
+    elif model_dict["meta"] == "complement-nb":
         return deserialize_complement_nb(model_dict)
-    elif model_dict['meta'] == 'lr':
+    elif model_dict["meta"] == "lr":
         return deserialize_logistic_regression(model_dict)
-    elif model_dict['meta'] == 'lda':
+    elif model_dict["meta"] == "lda":
         return deserialize_lda(model_dict)
-    elif model_dict['meta'] == 'qda':
+    elif model_dict["meta"] == "qda":
         return deserialize_qda(model_dict)
-    elif model_dict['meta'] == 'gb':
+    elif model_dict["meta"] == "gb":
         return deserialize_gradient_boosting(model_dict)
-    elif model_dict['meta'] == "random_forest":
+    elif model_dict["meta"] == "random_forest":
         return deserialize_random_forest(model_dict)
     elif model_dict["meta"] == "kmeans":
         return deserialize_k_means(model_dict)
@@ -136,13 +136,13 @@ def deserialize_model(model_dict):
         return deserialize_lsa(model_dict)
     elif model_dict["meta"] == "dbscan":
         return deserialize_dbscan_clustering(model_dict)
-    elif model_dict["meta"] == 'decision-tree-regression':
+    elif model_dict["meta"] == "decision-tree-regression":
         return deserialize_decision_tree_regressor(model_dict)
-    elif model_dict["meta"] == 'linear-regression':
+    elif model_dict["meta"] == "linear-regression":
         return deserialize_linear_regressor(model_dict)
     elif model_dict["meta"] == "lasso-regression":
         return deserialize_lasso_regressor(model_dict)
-    elif model_dict["meta"] == 'elasticnet-regression':
+    elif model_dict["meta"] == "elasticnet-regression":
         return deserialize_elastic_regressor(model_dict)
     elif model_dict["meta"] == "ridge-regression":
         return deserialize_ridge_regressor(model_dict)
@@ -152,24 +152,24 @@ def deserialize_model(model_dict):
         return deserialize_mlp_regressor(model_dict)
     elif model_dict["meta"] == "rf-regression":
         return deserialize_random_forest_regressor(model_dict)
-    elif model_dict["meta"] == 'gb-regression':
+    elif model_dict["meta"] == "gb-regression":
         return deserialize_gradient_boosting_regressor(model_dict)
-    elif model_dict["meta"] == 'label-binarizer':
+    elif model_dict["meta"] == "label-binarizer":
         return deserialize_label_binarizer(model_dict)
-    elif model_dict["meta"] == 'csr':
+    elif model_dict["meta"] == "csr":
         return deserialize_csr_matrix(model_dict)
-    elif model_dict["meta"] == 'perceptron':
+    elif model_dict["meta"] == "perceptron":
         return deserialize_perceptron(model_dict)
-    elif model_dict["meta"] == 'mlp':
+    elif model_dict["meta"] == "mlp":
         return deserialize_mlp(model_dict)
-    elif model_dict["meta"] == 'decision-tree':
+    elif model_dict["meta"] == "decision-tree":
         return deserialize_decision_tree(model_dict)
     else:
         raise ValueError("Model type cannot be found in deserialize_model function. Please implement it!")
 
 
 def from_json(file_name):
-    with open(file_name, 'r') as model_json:
+    with open(file_name, "r") as model_json:
         model_dict = json.load(model_json)
         return deserialize_model(model_dict)
 
@@ -238,5 +238,5 @@ def serialize_model(model):
 
 
 def to_json(model, model_name):
-    with open(model_name, 'w') as model_json:
+    with open(model_name, "w") as model_json:
         json.dump(serialize_model(model), model_json)

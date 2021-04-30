@@ -7,12 +7,7 @@ from sklearn.svm import SVR
 from sklearn.ensemble import RandomForestRegressor, GradientBoostingRegressor
 from test.helper_test import print_differences
 
-input_x = [[0, 2, 1],
-           [3, 3, 3],
-           [1, 1, 1],
-           [2, 2, 2],
-           [1, 3, 2],
-           [1, 5, 4]]
+input_x = [[0, 2, 1], [3, 3, 3], [1, 1, 1], [2, 2, 2], [1, 3, 2], [1, 5, 4]]
 output_y = [1, 3, 1.5, 3, 3.6, 4.1]
 new_x = [[0, 1, 2]]
 additional_input_x = [[10, 20, 5]]
@@ -76,7 +71,13 @@ class RegressionTestCase(unittest.TestCase):
 
     def test_to_json_from_json_mlp_regressor(self):
         model = MLPRegressor(random_state=1)
-        self.base(model, input_x, output_y, new_x, exclude_keys=['_random_state', '_optimizer'])
+        self.base(
+            model,
+            input_x,
+            output_y,
+            new_x,
+            exclude_keys=["_random_state", "_optimizer"],
+        )
 
     def test_to_json_from_json_svr(self):
         model = SVR()
