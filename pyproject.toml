@@ -1,3 +1,10 @@
 [build-system]
 requires = ["setuptools>=42", "wheel"]
 build-backend = "setuptools.build_meta"
+
+[tool.black]
+line-length = 120
+target-version = ['py38']
+include = '\.pyi?$'
+extend-exclude = ' E203, E266, E501, W503, C901, E741, C812, C819, FS002, FS003'
+

@@ -3,6 +3,7 @@ from sklearn.svm import SVC, LinearSVC
 from os import remove
 from sklearn.linear_model import LogisticRegression, Perceptron
 from sklearn.tree import DecisionTreeClassifier
+
 # from sklearn.tree._tree import Tree
 from sklearn import discriminant_analysis
 from sklearn.ensemble import RandomForestClassifier, GradientBoostingClassifier
@@ -10,9 +11,7 @@ from sklearn.naive_bayes import BernoulliNB, GaussianNB, MultinomialNB, Compleme
 from sklearn.neural_network import MLPClassifier
 from test.helper_test import print_differences
 
-input_x = [[0, 2, 1],
-           [3, 3, 3],
-           [1, 1, 1]]
+input_x = [[0, 2, 1], [3, 3, 3], [1, 1, 1]]
 output_y = [0, 1, 1]
 new_x = [[0, 0, 0]]
 

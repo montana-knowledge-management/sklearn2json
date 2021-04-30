@@ -9,18 +9,27 @@ class VectorizerTestCase(unittest.TestCase):
         """
         Test saving tfidf model weights in case of default parameters.
         """
-        tfidf_vectorizer = TfidfVectorizer(decode_error="ignore", encoding="ascii", strip_accents="ascii",
-                                           lowercase=False, analyzer="char_wb", stop_words=["a", "stb"],
-                                           token_pattern=r"(?u)\b[a-z]+?\b", ngram_range=(1, 3), max_df=0.99,
-                                           min_df=0.01, binary=True, norm="l1",
-
-                                           smooth_idf=False,
-                                           sublinear_tf=True
-
-                                           )
-        test_data = ["The quick brown fox jumps over the lazy dog.",
-                     "When a dog barks it won't bite you.",
-                     "This one is a dog, the other is a puppy."]
+        tfidf_vectorizer = TfidfVectorizer(
+            decode_error="ignore",
+            encoding="ascii",
+            strip_accents="ascii",
+            lowercase=False,
+            analyzer="char_wb",
+            stop_words=["a", "stb"],
+            token_pattern=r"(?u)\b[a-z]+?\b",
+            ngram_range=(1, 3),
+            max_df=0.99,
+            min_df=0.01,
+            binary=True,
+            norm="l1",
+            smooth_idf=False,
+            sublinear_tf=True,
+        )
+        test_data = [
+            "The quick brown fox jumps over the lazy dog.",
+            "When a dog barks it won't bite you.",
+            "This one is a dog, the other is a puppy.",
+        ]
         tfidf_vectorizer.fit_transform(test_data)
         sklearn2json.to_json(tfidf_vectorizer, "tfidf_vectorizer.json")
         loaded_tfidf_model = sklearn2json.from_json("tfidf_vectorizer.json")
@@ -51,15 +60,36 @@ class VectorizerTestCase(unittest.TestCase):
         Test saving tfidf model weights in case of default parameters.
         """
         tfidf_vectorizer = TfidfVectorizer(
-            vocabulary={'the': 14, 'quick': 13, 'brown': 2, 'fox': 4, 'jumps': 7, 'over': 11, 'lazy': 8, 'dog': 3,
-                        'when': 16, 'barks': 0, 'it': 6, 'won': 17, 'bite': 1, 'you': 18, 'this': 15, 'one': 9, 'is': 5,
-                        'other': 10, 'puppy': 12, "catdoll": 19},
+            vocabulary={
+                "the": 14,
+                "quick": 13,
+                "brown": 2,
+                "fox": 4,
+                "jumps": 7,
+                "over": 11,
+                "lazy": 8,
+                "dog": 3,
+                "when": 16,
+                "barks": 0,
+                "it": 6,
+                "won": 17,
+                "bite": 1,
+                "you": 18,
+                "this": 15,
+                "one": 9,
+                "is": 5,
+                "other": 10,
+                "puppy": 12,
+                "catdoll": 19,
+            },
             use_idf=False,
-            max_features=100
+            max_features=100,
         )
-        test_data = ["The quick brown fox jumps over the lazy dog.",
-                     "When a dog barks it won't bite you.",
-                     "This one is a dog, the other is a puppy and catdoll."]
+        test_data = [
+            "The quick brown fox jumps over the lazy dog.",
+            "When a dog barks it won't bite you.",
+            "This one is a dog, the other is a puppy and catdoll.",
+        ]
         tfidf_vectorizer.fit_transform(test_data)
         sklearn2json.to_json(tfidf_vectorizer, "tfidf_vectorizer.json")
         loaded_tfidf_model = sklearn2json.from_json("tfidf_vectorizer.json")
@@ -69,5 +99,5 @@ class VectorizerTestCase(unittest.TestCase):
         remove("tfidf_vectorizer.json")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

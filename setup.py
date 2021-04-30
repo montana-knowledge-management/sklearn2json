@@ -7,6 +7,5 @@ setup(
         "scikit-learn",
         "numpy",
         "scipy",
-
-    ]
+    ],
 )

@@ -3,12 +3,7 @@ from sklearn.decomposition import TruncatedSVD
 from os import remove
 from test.helper_test import print_differences
 
-input_x = [[0, 2, 1, 2],
-           [3, 3, 3, 2],
-           [1, 1, 1, 2],
-           [2, 2, 2, 1],
-           [1, 3, 2, 1],
-           [1, 5, 4, 5]]
+input_x = [[0, 2, 1, 2], [3, 3, 3, 2], [1, 1, 1, 2], [2, 2, 2, 1], [1, 3, 2, 1], [1, 5, 4, 5]]
 new_x = [[0, 1, 2, 3]]
 
 
