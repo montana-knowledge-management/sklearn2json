@@ -6,7 +6,7 @@ clone:
 definitions:
   services:
     docker:
-      memory: 3000
+      memory: 3000         # if you got an EOF file error, it can be caused by the
 
   caches:
     sonar: ~/.sonar/cache  # Caching SonarCloud artifacts will speed up your build
@@ -26,10 +26,10 @@ definitions:
             variables:
               EXTRA_ARGS: "-Dsonar.sources=sklearn2json"
               DEBUG: 'false'
-    #- step: &check-quality-gate-sonarcloud
-    #    name: Check the Quality Gate on SonarCloud
-    #    script:
-    #      - pipe: sonarsource/sonarcloud-quality-gate:0.1.4
+    - step: &check-quality-gate-sonarcloud
+        name: Check the Quality Gate on SonarCloud
+        script:
+          - pipe: sonarsource/sonarcloud-quality-gate:0.1.4
 
 pipelines:
   default:
