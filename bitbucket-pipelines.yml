@@ -3,11 +3,11 @@ image: python:3.8
 clone:
   depth: full              # SonarCloud scanner needs the full history to assign issues properly
 
-services:
-  docker:
-    memory: 3000
-
 definitions:
+  services:
+    docker:
+      memory: 3000
+
   caches:
     sonar: ~/.sonar/cache  # Caching SonarCloud artifacts will speed up your build
   steps:
@@ -21,11 +21,11 @@ definitions:
           - python3 -m venv env
           - source env/bin/activate
           - pip install pytest pytest-cov -r requirements.txt
-          - python3 -m pytest --cov=sklearn2json --cov-report xml:coverage-reports/coverage-all.xml
+          - pytest --cov=sklearn2json --cov-report xml:coverage-reports/coverage-all.xml
           - pipe: sonarsource/sonarcloud-scan:1.2.1
             variables:
               EXTRA_ARGS: "-Dsonar.sources=sklearn2json"
-              DEBUG: 'true'
+              DEBUG: 'false'
     #- step: &check-quality-gate-sonarcloud
     #    name: Check the Quality Gate on SonarCloud
     #    script:
