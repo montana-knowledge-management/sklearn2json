@@ -24,18 +24,18 @@ definitions:
           - python3 -m pytest --cov=sklearn2json --cov-report xml:coverage-reports/coverage-all.xml
           - pipe: sonarsource/sonarcloud-scan:1.2.1
             variables:
-              EXTRA_ARGS: "-Dsonar.sources=sklearn2json/**"
+              EXTRA_ARGS: "-Dsonar.sources=sklearn2json"
               DEBUG: 'false'
-    - step: &check-quality-gate-sonarcloud
-        name: Check the Quality Gate on SonarCloud
-        script:
-          - pipe: sonarsource/sonarcloud-quality-gate:0.1.4
+    #- step: &check-quality-gate-sonarcloud
+    #    name: Check the Quality Gate on SonarCloud
+    #    script:
+    #      - pipe: sonarsource/sonarcloud-quality-gate:0.1.4
 
 pipelines:
   default:
     - step: *build-test-sonarcloud
-    - step: *check-quality-gate-sonarcloud
+    #- step: *check-quality-gate-sonarcloud
   pull-requests:
     '**':
       - step: *build-test-sonarcloud
-      - step: *check-quality-gate-sonarcloud
+      #- step: *check-quality-gate-sonarcloud
