@@ -27,7 +27,6 @@ def serialize_tfidf(model):
         "max_features": model.max_features,
         "vocabulary": model.vocabulary,
         "binary": model.binary,
-        # "dtype": str(model.dtype)
         "norm": model.norm,
         "use_idf": model.use_idf,
         "smooth_idf": model.smooth_idf,
@@ -65,7 +64,6 @@ def deserialize_tfidf(tfidf_model):
     model.max_features = tfidf_model["max_features"]
     model.vocabulary = tfidf_model["vocabulary"]
     model.binary = tfidf_model["binary"]
-    # model.dtype = tfidf_model["dtype"]
     model.norm = tfidf_model["norm"]
     model.use_idf = tfidf_model["use_idf"]
     model.smooth_idf = tfidf_model["smooth_idf"]
