@@ -1,16 +1,28 @@
 import numpy as np
-from sklearn.svm import SVC, LinearSVC
 import scipy as sp
-from sklearn import discriminant_analysis, dummy
-from sklearn.linear_model import LogisticRegression, Perceptron
-from sklearn.tree import DecisionTreeClassifier
-from sklearn.ensemble import RandomForestClassifier, GradientBoostingClassifier, _gb_losses
-from sklearn.naive_bayes import BernoulliNB, GaussianNB, MultinomialNB, ComplementNB
+from sklearn import discriminant_analysis
+from sklearn import dummy
+from sklearn.ensemble import _gb_losses
+from sklearn.ensemble import GradientBoostingClassifier
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.linear_model import LogisticRegression
+from sklearn.linear_model import Perceptron
+from sklearn.naive_bayes import BernoulliNB
+from sklearn.naive_bayes import ComplementNB
+from sklearn.naive_bayes import GaussianNB
+from sklearn.naive_bayes import MultinomialNB
 from sklearn.neural_network import MLPClassifier
-from sklearn2json.regression import deserialize_decision_tree_regressor, serialize_decision_tree_regressor
-from sklearn2json.csr import serialize_csr_matrix, deserialize_csr_matrix
-from sklearn2json.label_encoders import serialize_label_binarizer, deserialize_label_binarizer
-from sklearn2json.common_functions import serialize_tree, deserialize_tree
+from sklearn.svm import LinearSVC
+from sklearn.svm import SVC
+from sklearn.tree import DecisionTreeClassifier
+from sklearn2json.common_functions import deserialize_tree
+from sklearn2json.common_functions import serialize_tree
+from sklearn2json.csr import deserialize_csr_matrix
+from sklearn2json.csr import serialize_csr_matrix
+from sklearn2json.label_encoders import deserialize_label_binarizer
+from sklearn2json.label_encoders import serialize_label_binarizer
+from sklearn2json.regression import deserialize_decision_tree_regressor
+from sklearn2json.regression import serialize_decision_tree_regressor
 
 
 def serialize_logistic_regression(model):

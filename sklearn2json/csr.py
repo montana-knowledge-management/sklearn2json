@@ -1,5 +1,5 @@
-import scipy as sp
 import numpy as np
+import scipy as sp
 
 
 def serialize_csr_matrix(csr_matrix):

@@ -1,5 +1,5 @@
-from sklearn.tree._tree import Tree
 import numpy as np
+from sklearn.tree._tree import Tree
 
 
 def serialize_tree(tree):

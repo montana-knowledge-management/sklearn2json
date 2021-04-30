@@ -1,11 +1,16 @@
 import unittest
 from os import remove
-from sklearn.tree import DecisionTreeRegressor
-from sklearn.linear_model import LinearRegression, Lasso, Ridge, ElasticNet
+from test.helper_test import print_differences
+
+from sklearn.ensemble import GradientBoostingRegressor
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.linear_model import ElasticNet
+from sklearn.linear_model import Lasso
+from sklearn.linear_model import LinearRegression
+from sklearn.linear_model import Ridge
 from sklearn.neural_network import MLPRegressor
 from sklearn.svm import SVR
-from sklearn.ensemble import RandomForestRegressor, GradientBoostingRegressor
-from test.helper_test import print_differences
+from sklearn.tree import DecisionTreeRegressor
 
 input_x = [[0, 2, 1], [3, 3, 3], [1, 1, 1], [2, 2, 2], [1, 3, 2], [1, 5, 4]]
 output_y = [1, 3, 1.5, 3, 3.6, 4.1]

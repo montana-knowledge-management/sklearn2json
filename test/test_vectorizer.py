@@ -1,7 +1,8 @@
 import unittest
-from sklearn.feature_extraction.text import TfidfVectorizer
-import sklearn2json
 from os import remove
+
+import sklearn2json
+from sklearn.feature_extraction.text import TfidfVectorizer
 
 
 class VectorizerTestCase(unittest.TestCase):

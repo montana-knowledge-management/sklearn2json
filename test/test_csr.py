@@ -1,8 +1,9 @@
 import unittest
-import numpy as np
-from scipy.sparse import csr_matrix
 from os import remove
 from test.helper_test import print_differences
+
+import numpy as np
+from scipy.sparse import csr_matrix
 
 row = np.array([0, 1, 2, 0])
 col = np.array([0, 1, 1, 0])

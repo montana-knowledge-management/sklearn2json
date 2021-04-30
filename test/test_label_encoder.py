@@ -1,7 +1,8 @@
 import unittest
-from sklearn.preprocessing import LabelBinarizer
 from os import remove
 from test.helper_test import print_differences
+
+from sklearn.preprocessing import LabelBinarizer
 
 labels = [1, 2, 6, 4, 2, 3, 6, 4, 2, 3, 5]
 

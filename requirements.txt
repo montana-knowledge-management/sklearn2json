@@ -1,4 +1,7 @@
 pre-commit
+pylint
+mypy
+black
 scikit-learn
 numpy
 scipy

@@ -1,42 +1,30 @@
-# Configuration file for pre-commit
-# Please run `pre-commit run --all-files` when adding or changing entries.
-
 repos:
-  - repo: local
+  - repo: https://github.com/asottile/pyupgrade
+    rev: v2.13.0
+    hooks:
+      - id: pyupgrade
+        args: ["--py36-plus"]
+  - repo: https://github.com/asottile/reorder_python_imports
+    rev: v2.5.0
+    hooks:
+      - id: reorder-python-imports
+        name: Reorder Python imports (src, tests)
+        files: "^(?!examples/)"
+        args: ["--application-directories", "src"]
+  - repo: https://github.com/psf/black
+    rev: 21.4b0
     hooks:
       - id: black
-        name: black
-        entry: black
-        language: system
-        stages: [ commit ]
-        types: [ python ]
-
-      - id: gitlint
-        name: gitlint
-        entry: gitlint
-        args: [ --msg-filename ]
-        language: system
-        stages: [ commit-msg ]
-
-      - id: isort
-        name: isort
-        entry: isort
-        language: system
-        stages: [ commit ]
-        types: [ python ]
-
-      - id: mypy
-        name: mypy
-        entry: mypy
-        args: [ --no-incremental ]
-        language: system
-        stages: [ commit ]
-        types: [ python ]
-        require_serial: true
-
-      - id: pylint
-        name: pylint
-        entry: pylint
-        language: system
-        stages: [ commit ]
-        types: [ python ]
+  - repo: https://github.com/PyCQA/flake8
+    rev: 3.9.1
+    hooks:
+      - id: flake8
+        additional_dependencies:
+          - flake8-bugbear
+          - flake8-implicit-str-concat
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v3.4.0
+    hooks:
+      - id: fix-byte-order-marker
+      - id: trailing-whitespace
+      - id: end-of-file-fixer

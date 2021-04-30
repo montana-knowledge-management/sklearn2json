@@ -43,7 +43,7 @@ $ pip install sklearn2json
 ## Example Usage
 
 ```
-    import sklearn2json as sk 
+    import sklearn2json as sk
     from sklearn.ensemble import RandomForestClassifier
 
     model = RandomForestClassifier(n_estimators=10, max_depth=5, random_state=0).fit(X, y)

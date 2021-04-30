@@ -1,15 +1,22 @@
 import unittest
-from sklearn.svm import SVC, LinearSVC
 from os import remove
-from sklearn.linear_model import LogisticRegression, Perceptron
+from test.helper_test import print_differences
+
+from sklearn import discriminant_analysis
+from sklearn.ensemble import GradientBoostingClassifier
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.linear_model import LogisticRegression
+from sklearn.linear_model import Perceptron
+from sklearn.naive_bayes import BernoulliNB
+from sklearn.naive_bayes import ComplementNB
+from sklearn.naive_bayes import GaussianNB
+from sklearn.naive_bayes import MultinomialNB
+from sklearn.neural_network import MLPClassifier
+from sklearn.svm import LinearSVC
+from sklearn.svm import SVC
 from sklearn.tree import DecisionTreeClassifier
 
 # from sklearn.tree._tree import Tree
-from sklearn import discriminant_analysis
-from sklearn.ensemble import RandomForestClassifier, GradientBoostingClassifier
-from sklearn.naive_bayes import BernoulliNB, GaussianNB, MultinomialNB, ComplementNB
-from sklearn.neural_network import MLPClassifier
-from test.helper_test import print_differences
 
 input_x = [[0, 2, 1], [3, 3, 3], [1, 1, 1]]
 output_y = [0, 1, 1]

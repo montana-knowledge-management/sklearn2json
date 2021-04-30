@@ -1,5 +1,6 @@
-from sklearn.cluster import KMeans, DBSCAN
 import numpy as np
+from sklearn.cluster import DBSCAN
+from sklearn.cluster import KMeans
 
 
 def serialize_dbscan_clustering(model):
