@@ -1,9 +1,7 @@
-
 [![Sonarcloud Status](https://sonarcloud.io/api/project_badges/measure?project=com.lapots.breed.judge:judge-rule-engine&metric=alert_status)](https://sonarcloud.io/dashboard?id=com.lapots.breed.judge:judge-rule-engine)
 [![License: AGPL v3](https://img.shields.io/badge/License-AGPL%20v3-blue.svg)](https://www.gnu.org/licenses/agpl-3.0)
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://GitHub.com/Naereen/StrapDown.js/graphs/commit-activity)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
-
 
 ## Sklearn2JSON
 
@@ -15,10 +13,11 @@ Scikit-learn has an integrated function to export models. This functionality is 
 on Pickle) libraries. Pickle module can serialize almost any Python object, without any boilerplate or even
 white-/black-listing (in the typical case). However, it is unsafe because it constructs arbitrary Python objects by
 invoking random functions. Therefore, if one inner variable is refactored in your deployed machine learning model, it
-cannot be loaded with the newest version of `scikit-learn`. This can cause a maintenance overhead and some headaches for deployed machine learning-based projects.
+cannot be loaded with the newest version of `scikit-learn`. This can cause a maintenance overhead and headaches for
+deployed machine learning-based projects.
 
-Moreover, serializing model files with Pickle provides a simple attack vector for malicious users-- they give an attacker
-the ability to execute arbitrary code wherever the file is deserialized ([example][example]).
+Moreover, serializing model files with Pickle provides a simple attack vector for malicious users-- they give an
+attacker the ability to execute arbitrary code wherever the file is deserialized ([example][example]).
 
 Sklearn2JSON is a safe and transparent solution for exporting scikit-learn model files.
 
@@ -33,7 +32,7 @@ Model files are serialized in JSON (i.e., not binary), so you have the ability t
 #### Easy care
 
 The library saves the mathematical parameters (inner variables) of the trained machine learning model, which can be used
-in the future, with newer version of scikit-learn, instead of the class parameters changed a bit.
+in the future with newer version of scikit-learn even when the class parameters have changed a bit.
 
 ## Install
 
@@ -60,11 +59,11 @@ $ pip install sklearn2json
 The list of supported models is growing. If you have a request for a model or feature, please reach out to
 sklearn2json@docutent.org.
 
-SkLearn2PMML is licensed under the terms and conditions of
+Sklearn2JSON is licensed under the terms and conditions of
 the [GNU Affero General Public License, Version 3.0](https://www.gnu.org/licenses/agpl-3.0.html).
 
-If you would like to use SkLearn2PMML in a proprietary software project, then it is possible to enter into a licensing
-agreement which makes SkLearn2PMML available under the terms and conditions of
+If you would like to use Sklearn2JSON in a proprietary software project, then it is possible to enter into a licensing
+agreement which makes Sklearn2JSON available under the terms and conditions of
 the [BSD 3-Clause License](https://opensource.org/licenses/BSD-3-Clause) instead.
 
 ## Contributing
@@ -74,7 +73,7 @@ the [contributing guidelines][contributing].
 
 # Additional information #
 
-The concept of the project is based on the sklearn-json project SkLearn2JSON is developed, supported and maintained by
+The concept of the project is based on the sklearn-json project. SkLearn2JSON is developed, supported and maintained by
 MONTANA Knowledge Management LTD, Hungary. In order to grow the community of contributors and users, and allow the
 maintainers to devote more time to the projects, [please donate today] [donate].
 
@@ -90,6 +89,7 @@ contact [info@docutent.org](mailto:info@docutent.org)
     * sklearn.discriminant_analysis.LinearDiscriminantAnalysis
     * sklearn.discriminant_analysis.QuadraticDiscriminantAnalysis
     * sklearn.svm.SVC
+    * sklearn.svm.LinearSVC
     * sklearn.naive_bayes.GaussianNB
     * sklearn.naive_bayes.MultinomialNB
     * sklearn.naive_bayes.ComplementNB
@@ -102,6 +102,7 @@ contact [info@docutent.org](mailto:info@docutent.org)
 
 * **Regression**
 
+    * sklearn.linear_model.ElasticNet
     * sklearn.linear_model.LinearRegression
     * sklearn.linear_model.Ridge
     * sklearn.linear_model.Lasso
@@ -110,6 +111,20 @@ contact [info@docutent.org](mailto:info@docutent.org)
     * sklearn.ensemble.RandomForestRegressor
     * sklearn.ensemble.GradientBoostingRegressor
     * sklearn.neural_network.MLPRegressor
+
+
+* **Clustering**
+
+    * sklearn.cluster.KMeans
+    * sklearn.cluster.DBSCAN
+
+
+* **Other**
+
+    * sklearn.feature_extraction.text.TfidfVectorizer
+    * sklearn.decomposition.TruncatedSVD
+    * sklearn.preprocessing.LabelBinarizer
+    * scipy.sparse.csr_matrix
 
 [example]: https://www.smartfile.com/blog/python-pickle-security-problems-and-solutions/
 

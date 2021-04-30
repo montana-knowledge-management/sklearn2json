@@ -109,13 +109,7 @@ class ClassificationTestCase(unittest.TestCase):
 
     def test_to_json_from_json_mlp(self):
         model = MLPClassifier()
-        self.base(
-            model,
-            input_x,
-            output_y,
-            new_x,
-            exclude_keys=["_random_state", "_optimizer"],
-        )
+        self.base(model, input_x, output_y, new_x, exclude_keys=["_random_state", "_optimizer"])
 
     def test_to_json_from_json_decision_tree(self):
         model = DecisionTreeClassifier()

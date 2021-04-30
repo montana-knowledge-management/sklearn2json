@@ -4,7 +4,7 @@ Thank you for considering contributing to Sklearn2JSON!
 
 The DocuTent community appreciates your contributions via issues and pull requests. Note that
 the [code of conduct](CODE_OF_CONDUCT.md)
-applies to all interactions with the meshio project, including issues and pull requests.
+applies to all interactions with the Sklearn2JSON project, including issues and pull requests.
 
 When submitting pull requests, please follow the style guidelines of the project, ensure that your code is tested and
 documented, and write good commit messages, e.g., following [these guidelines](https://chris.beams.io/posts/git-commit/)
