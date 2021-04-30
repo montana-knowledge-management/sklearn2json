@@ -6,7 +6,7 @@ setup(
     install_requires=[
         "scikit-learn",
         "numpy",
-        "scipy"
+        "scipy",
 
     ]
 )
