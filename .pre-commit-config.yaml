@@ -1,4 +1,4 @@
-# Please run the following command from your terminal, before commiting changes
+# Please run the following command from your terminal, before committing changes
 # pre-commit run --all-files
 repos:
   - repo: https://github.com/asottile/pyupgrade
