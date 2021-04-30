@@ -4,13 +4,13 @@ import scipy as sp
 from sklearn import discriminant_analysis, dummy
 from sklearn.linear_model import LogisticRegression, Perceptron
 from sklearn.tree import DecisionTreeClassifier
-from sklearn.tree._tree import Tree
 from sklearn.ensemble import RandomForestClassifier, GradientBoostingClassifier, _gb_losses
 from sklearn.naive_bayes import BernoulliNB, GaussianNB, MultinomialNB, ComplementNB
 from sklearn.neural_network import MLPClassifier
 from sklearn2json.regression import deserialize_decision_tree_regressor, serialize_decision_tree_regressor
 from sklearn2json.csr import serialize_csr_matrix, deserialize_csr_matrix
 from sklearn2json.label_encoders import serialize_label_binarizer, deserialize_label_binarizer
+from sklearn2json.common_functions import serialize_tree, deserialize_tree
 
 
 def serialize_logistic_regression(model):
@@ -234,31 +234,6 @@ def deserialize_qda(model_dict):
         model.n_features_in_ = model_dict['n_features_in_']
 
     return model
-
-
-def serialize_tree(tree):
-    serialized_tree = tree.__getstate__()
-
-    dtypes = serialized_tree['nodes'].dtype
-    serialized_tree['nodes'] = serialized_tree['nodes'].tolist()
-    serialized_tree['values'] = serialized_tree['values'].tolist()
-
-    return serialized_tree, dtypes
-
-
-def deserialize_tree(tree_dict, n_features, n_classes, n_outputs):
-    tree_dict['nodes'] = [tuple(lst) for lst in tree_dict['nodes']]
-
-    names = ['left_child', 'right_child', 'feature', 'threshold', 'impurity', 'n_node_samples',
-             'weighted_n_node_samples']
-    tree_dict['nodes'] = np.array(tree_dict['nodes'],
-                                  dtype=np.dtype({'names': names, 'formats': tree_dict['nodes_dtype']}))
-    tree_dict['values'] = np.array(tree_dict['values'])
-
-    tree = Tree(n_features, np.array([n_classes], dtype=np.intp), n_outputs)
-    tree.__setstate__(tree_dict)
-
-    return tree
 
 
 def serialize_decision_tree(model):
@@ -568,7 +543,10 @@ def deserialize_svm(model_dict):
     model.class_weight_ = np.array(model_dict['class_weight_']).astype(np.float64)
     model.classes_ = np.array(model_dict['classes_'])
     model.support_ = np.array(model_dict['support_']).astype(np.int32)
-    model._n_support = np.array(model_dict['_n_support']).astype(np.int32)
+    if model_dict.get('_n_support'):
+        model._n_support = np.array(model_dict['_n_support']).astype(np.int32)
+    if model_dict.get('n_support_'):
+        model._n_support = np.array(model_dict['n_support_']).astype(np.int32)
     model.intercept_ = np.array(model_dict['intercept_']).astype(np.float64)
     model._probA = np.array(model_dict['probA_']).astype(np.float64)
     model._probB = np.array(model_dict['probB_']).astype(np.float64)
