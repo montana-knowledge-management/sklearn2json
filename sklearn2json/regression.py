@@ -1,7 +1,11 @@
 import numpy as np
 from sklearn.linear_model import LinearRegression, Lasso, Ridge, ElasticNet
 from sklearn.tree import DecisionTreeRegressor
-from sklearn.ensemble import RandomForestRegressor, GradientBoostingRegressor, _gb_losses
+from sklearn.ensemble import (
+    RandomForestRegressor,
+    GradientBoostingRegressor,
+    _gb_losses,
+)
 from sklearn.neural_network import MLPRegressor
 from sklearn2json.common_functions import serialize_tree, deserialize_tree
 from sklearn.svm import SVR
