@@ -1,3 +1,4 @@
+pre-commit
 scikit-learn
 numpy
 scipy
