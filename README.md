@@ -27,7 +27,7 @@ Model files are serialized in JSON (i.e., not binary), so you have the ability t
 ## Install
 
 ```
-pip install sklearn2json
+$ pip install sklearn2json
 ```
 ## Example Usage
 
@@ -67,31 +67,28 @@ contact [info@docutent.org](mailto:info@docutent.org)
 
 * **Classification**
 
-```
-  sklearn.linear_model.LogisticRegression
-  sklearn.linear_model.Perceptron
-  sklearn.discriminant_analysis.LinearDiscriminantAnalysis
-  sklearn.discriminant_analysis.QuadraticDiscriminantAnalysis
-  sklearn.svm.SVC
-  sklearn.naive_bayes.GaussianNB
-  sklearn.naive_bayes.MultinomialNB
-  sklearn.naive_bayes.ComplementNB
-  sklearn.naive_bayes.BernoulliNB
-  sklearn.tree.DecisionTreeClassifier
-  sklearn.ensemble.RandomForestClassifier
-  sklearn.ensemble.GradientBoostingClassifier
-  sklearn.neural_network.MLPClassifier
-```
+  * sklearn.linear_model.LogisticRegression
+  * sklearn.linear_model.Perceptron
+  * sklearn.discriminant_analysis.LinearDiscriminantAnalysis
+  * sklearn.discriminant_analysis.QuadraticDiscriminantAnalysis
+  * sklearn.svm.SVC
+  * sklearn.naive_bayes.GaussianNB
+  * sklearn.naive_bayes.MultinomialNB
+  * sklearn.naive_bayes.ComplementNB
+  * sklearn.naive_bayes.BernoulliNB
+  * sklearn.tree.DecisionTreeClassifier
+  * sklearn.ensemble.RandomForestClassifier
+  * sklearn.ensemble.GradientBoostingClassifier
+  * sklearn.neural_network.MLPClassifier
+
 
 * **Regression**
 
-```
-  sklearn.linear_model.LinearRegression
-  sklearn.linear_model.Ridge
-  sklearn.linear_model.Lasso
-  sklearn.svm.SVR
-  sklearn.tree.DecisionTreeRegressor
-  sklearn.ensemble.RandomForestRegressor
-  sklearn.ensemble.GradientBoostingRegressor
-  sklearn.neural_network.MLPRegressor
-```
+  * sklearn.linear_model.LinearRegression
+  * sklearn.linear_model.Ridge
+  * sklearn.linear_model.Lasso
+  * sklearn.svm.SVR
+  * sklearn.tree.DecisionTreeRegressor
+  * sklearn.ensemble.RandomForestRegressor
+  * sklearn.ensemble.GradientBoostingRegressor
+  * sklearn.neural_network.MLPRegressor
