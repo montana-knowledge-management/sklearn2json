@@ -21,6 +21,6 @@ def print_differences(model):
                 "Original value:{}; Saved reloaded value: {}\n"
                 "Original type:{}; Saved reloaded type: {}".format(
                     key, value, test_model.__dict__.get(key), type(value), type(test_model.__dict__.get(key))
-                )
+                ),
             )
     return model, test_model
