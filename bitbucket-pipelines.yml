@@ -30,17 +30,15 @@ definitions:
         name: Check the Quality Gate on SonarCloud
         script:
           - pipe: sonarsource/sonarcloud-quality-gate:0.1.4
-            variables:
-              SONAR_TOKEN: ${SONAR_TOKEN}
 
 pipelines:
   default:
     - step: *build-test-sonarcloud
-  #branches:
-  #    master:
-  #      - step: *build-test-sonarcloud
-  #      - step: *check-quality-gate-sonarcloud
+  branches:
+      master:
+        - step: *build-test-sonarcloud
+        - step: *check-quality-gate-sonarcloud
   pull-requests:
     '**':
       - step: *build-test-sonarcloud
-      #- step: *check-quality-gate-sonarcloud
+      - step: *check-quality-gate-sonarcloud
