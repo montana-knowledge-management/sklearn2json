@@ -4,9 +4,9 @@ clone:
   depth: full              # SonarCloud scanner needs the full history to assign issues properly
 
 definitions:
-  services:
-    docker:
-      memory: 3000         # if you got an EOF file error, it can be caused by the
+  #services:
+  #  docker:
+  #    memory: 3000         # if you got an EOF file error, it can be caused by the
 
   caches:
     sonar: ~/.sonar/cache  # Caching SonarCloud artifacts will speed up your build
@@ -14,7 +14,7 @@ definitions:
     - step: &build-test-sonarcloud
         name: Build, test and analyze on SonarCloud
         caches:
-          - docker # See https://confluence.atlassian.com/bitbucket/caching-dependencies-895552876.html
+          - pip #docker # See https://confluence.atlassian.com/bitbucket/caching-dependencies-895552876.html
           - sonar
         script:
           # create environment
@@ -30,8 +30,6 @@ definitions:
         name: Check the Quality Gate on SonarCloud
         script:
           - pipe: sonarsource/sonarcloud-quality-gate:0.1.4
-            variables:
-              DEBUG: 'true'
 
 pipelines:
   default:
