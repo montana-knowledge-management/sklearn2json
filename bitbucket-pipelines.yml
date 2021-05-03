@@ -30,6 +30,8 @@ definitions:
         name: Check the Quality Gate on SonarCloud
         script:
           - pipe: sonarsource/sonarcloud-quality-gate:0.1.4
+            variables:
+              DEBUG: 'true'
 
 pipelines:
   default:
