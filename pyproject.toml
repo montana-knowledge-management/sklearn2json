@@ -1,17 +1,120 @@
-[build-system]
-requires = ["setuptools>=42", "wheel"]
-build-backend = "setuptools.build_meta"
+# Main package description
+[tool.poetry]
+name = "Sklearn2JSON"
+version = "2021.4.rc"
+description = "Python library for converting Scikit-Learn models to JSON."
+authors = [
+    "MONTANA Knowledge Management ltd. <info@distiller.dev>",
+    "Daniel Nagy <daniel.nagy@montana.hu>",
+    "Tamas Orosz <orosz.tamas@montana.hu>",
+    "Krisztian Gado <gado.krisztian@montana.hu>",
+    "Gergely Csanyi <csanyi.gergely@montana.hu>",
+    "Istvan Uveges <istavan.uveges@montana.hu>"
+]
+license = "AGPL"
 
+# Project dependencies only
+[tool.poetry.dependencies]
+python = ">=3.7, <=3.10"
+scikit-learn="^0.24.2" # TODO: check version
+numpy="^1.20.2"
+scipy="^1.6.3"
+
+
+# Dependencies for developers
+# list all devtools here
+[tool.poetry.dev-dependencies]
+black = "*"
+coverage = "*"
+pre-commit = "*"
+pytest = "*"
+gitlint = "*"
+isort = "*"
+pyupgrade = "^2.29"
+pylint = "^2.11.1"
+requests = "^2.26.0"
+
+
+# build system setup
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+
+# DEVTOOLS CONFIG #
+
+#BLACK
 [tool.black]
 line-length = 120
-target-version = ['py37']
-include = '\.pyi?$'
-extend-exclude = ' E203, E266, E501, W503, C901, E741, C812, C819, FS002, FS003'
+target-version = ['py39']
+force-exclude = '''
+  (
+    digital-twin-distiller/resources/
+  | tests/solver_script_references/
+  )
+'''
+quiet = true
+
+
+# COVERAGE
+# https://coverage.readthedocs.io/en/6.1.1/config.html
+
+[tool.coverage.run]
+command_line = "-m py.test"
+source = ['sklearn2json']
+branch = true
+# omit = []
+
+[tool.coverage.report]
+sort = "cover"
+exclude_lines = [
+    'if __name__ == "__main__":',
+    'def __repr__',
+    'def __str',
+    '@(abc\.)?abstractmethod'
+]
+omit = ['tests', 'examples']
+
+
+
+# ISORT
+# https://pycqa.github.io/isort/docs/configuration/options.html
 
 [tool.isort]
+profile = "black"
 line_length = 120
 case_sensitive = true
-use_parentheses = true
+use_parentheses = false
 include_trailing_comma = true
 multi_line_output = 3
 force_grid_wrap = 0
+quiet = true
+
+[tool.pylint.MASTER]
+max-line-length = 120
+fail-under = 0.85
+ignore = ['LICENSE']
+ignore-paths = ['tests', 'resources', 'examples']
+disable = [
+    "bad-continuation",
+    "duplicate-code",
+    "invalid-name",
+    "missing-docstring",
+    "too-few-public-methods",
+]
+
+# [too.pylint.message_control]
+# max-line-length = 80
+# disable = [
+#   "missing-docstring",
+#   "unused-argument",
+#   "no-value-for-parameter",
+#   "no-member",
+#   "no-else-return",
+#   "bad-whitespace",
+#   "bad-continuation",
+#   "line-too-long",
+#   "fixme",
+#   "protected-access",
+#   "too-few-public-methods",
+# ]
