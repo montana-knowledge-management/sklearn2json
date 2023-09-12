@@ -426,10 +426,8 @@ def deserialize_decision_tree_regressor(model_dict):
     deserialized_decision_tree = DecisionTreeRegressor()
 
     deserialized_decision_tree.max_features_ = model_dict["max_features_"]
-    deserialized_decision_tree.n_features_ = model_dict["n_features_"]
+    deserialized_decision_tree.n_features_in_ = model_dict["n_features_in_"]
     deserialized_decision_tree.n_outputs_ = model_dict["n_outputs_"]
-    if model_dict.get("n_features_in_"):
-        deserialized_decision_tree.n_features_in_ = model_dict["n_features_in_"]
     tree = deserialize_tree(model_dict["tree_"], model_dict["n_features_"], 1, model_dict["n_outputs_"])
     deserialized_decision_tree.tree_ = tree
 
