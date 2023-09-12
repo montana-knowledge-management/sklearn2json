@@ -25,7 +25,7 @@ class RegressionTestCase(unittest.TestCase):
             exclude_keys = []
         model.fit(x_input, y_input)
         model, test_model = print_differences(model)
-        self.assertEqual(model.get_params(), test_model.get_params())
+        self.assertDictEqual(model.get_params(), test_model.get_params())
         self.assertEqual(set(model.__dict__.keys() - exclude_keys), set(test_model.__dict__.keys()))
         self.assertEqual(model.predict(new_x_input), test_model.predict(new_x_input))
         remove("model.json")
