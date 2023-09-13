@@ -1,19 +1,14 @@
 import numpy as np
 import scipy as sp
 from sklearn import dummy
-from sklearn.ensemble import _gb_losses
-from sklearn.ensemble import GradientBoostingRegressor
-from sklearn.ensemble import RandomForestRegressor
-from sklearn.linear_model import ElasticNet
-from sklearn.linear_model import Lasso
-from sklearn.linear_model import LinearRegression
-from sklearn.linear_model import Ridge
+from sklearn.ensemble import GradientBoostingRegressor, RandomForestRegressor, _gb_losses
+from sklearn.linear_model import ElasticNet, Lasso, LinearRegression, Ridge
 from sklearn.neural_network import MLPRegressor
 from sklearn.svm import SVR
 from sklearn.tree import DecisionTreeRegressor
+
 from sklearn2json import csr
-from sklearn2json.common_functions import deserialize_tree
-from sklearn2json.common_functions import serialize_tree
+from sklearn2json.common_functions import deserialize_tree, serialize_tree
 
 
 def serialize_linear_regressor(model):
@@ -24,7 +19,7 @@ def serialize_linear_regressor(model):
         "singular_": model.singular_.tolist(),
         "rank_": model.rank_,
         "n_features_in_": model.n_features_in_,
-        "_residues": model._residues,
+        # "_residues": model._residues,
         "fit_intercept": model.fit_intercept,
         "params": model.get_params(),
     }
@@ -36,7 +31,7 @@ def deserialize_linear_regressor(model_dict):
     model = LinearRegression(**model_dict["params"])
     model.singular_ = np.array(model_dict["singular_"])
     model.coef_ = np.array(model_dict["coef_"])
-    model._residues = np.float64(model_dict["_residues"])
+    # model._residues = np.float64(model_dict["_residues"])
     model.intercept_ = np.float64(model_dict["intercept_"])
     model.rank_ = model_dict["rank_"]
     if model_dict.get("n_features_in_"):
@@ -173,7 +168,6 @@ def serialize_svr(model):
     serialized_model = {
         "meta": "svr",
         "n_features_in_": model.n_features_in_,
-        "class_weight_": model.class_weight_.tolist(),
         "support_": model.support_.tolist(),
         "fit_status_": model.fit_status_,
         "_n_support": model._n_support.tolist(),
@@ -184,6 +178,8 @@ def serialize_svr(model):
         "shape_fit_": model.shape_fit_,
         "_gamma": model._gamma,
         "params": model.get_params(),
+        "n_iter_": model.n_iter_,
+        "_num_iter": model._num_iter.tolist(),
     }
 
     if isinstance(model.support_vectors_, sp.sparse.csr_matrix):
@@ -211,13 +207,14 @@ def deserialize_svr(model_dict):
     model._gamma = model_dict["_gamma"]
     if model_dict.get("n_features_in_"):
         model.n_features_in_ = model_dict["n_features_in_"]
-    model.class_weight_ = np.array(model_dict["class_weight_"]).astype(np.float64)
     model.support_ = np.array(model_dict["support_"]).astype(np.int32)
     model._n_support = np.array(model_dict["_n_support"]).astype(np.int32)
     model.intercept_ = np.array(model_dict["intercept_"]).astype(np.float64)
     model._probA = np.array(model_dict["_probA"]).astype(np.float64)
     model._probB = np.array(model_dict["_probB"]).astype(np.float64)
     model._intercept_ = np.array(model_dict["_intercept_"]).astype(np.float64)
+    model.n_iter_ = model_dict["n_iter_"]
+    model._num_iter = np.array(model_dict["_num_iter"]).astype(np.int32)
 
     if "meta" in model_dict["support_vectors_"] and model_dict["support_vectors_"]["meta"] == "csr":
         model.support_vectors_ = csr.deserialize_csr_matrix(model_dict["support_vectors_"])
@@ -248,7 +245,7 @@ def serialize_gradient_boosting_regressor(model):
     serialized_model = {
         "meta": "gb-regression",
         "max_features_": model.max_features_,
-        "n_features_": model.n_features_,
+        # "n_features_": model.n_features_,
         "n_estimators_": model.n_estimators_,
         "n_features_in_": model.n_features_in_,
         "train_score_": model.train_score_.tolist(),
@@ -264,14 +261,14 @@ def serialize_gradient_boosting_regressor(model):
     elif isinstance(model.init_, str):
         serialized_model["init_"] = model.init_
 
-    if isinstance(model.loss_, _gb_losses.LeastSquaresError):
-        serialized_model["loss_"] = "ls"
-    elif isinstance(model.loss_, _gb_losses.LeastAbsoluteError):
-        serialized_model["loss_"] = "lad"
-    elif isinstance(model.loss_, _gb_losses.HuberLossFunction):
-        serialized_model["loss_"] = "huber"
-    elif isinstance(model.loss_, _gb_losses.QuantileLossFunction):
-        serialized_model["loss_"] = "quantile"
+    if isinstance(model._loss, _gb_losses.LeastSquaresError):
+        serialized_model["_loss"] = "ls"
+    elif isinstance(model._loss, _gb_losses.LeastAbsoluteError):
+        serialized_model["_loss"] = "lad"
+    elif isinstance(model._loss, _gb_losses.HuberLossFunction):
+        serialized_model["_loss"] = "huber"
+    elif isinstance(model._loss, _gb_losses.QuantileLossFunction):
+        serialized_model["_loss"] = "quantile"
 
     if "priors" in model.init_.__dict__:
         serialized_model["priors"] = model.init_.priors.tolist()
@@ -289,20 +286,18 @@ def deserialize_gradient_boosting_regressor(model_dict):
         model.init_ = dummy.DummyRegressor()
         model.init_.__dict__ = model_dict["init_"]
         model.init_.__dict__.pop("meta")
-    if model_dict.get("n_features_in_"):
-        model.n_features_in_ = model_dict["n_features_in_"]
+    model.n_features_in_ = model_dict["n_features_in_"]
     model.n_estimators_ = model_dict["n_estimators_"]
     model.train_score_ = np.array(model_dict["train_score_"])
     model.max_features_ = model_dict["max_features_"]
-    model.n_features_ = model_dict["n_features_"]
-    if model_dict["loss_"] == "ls":
-        model.loss_ = _gb_losses.LeastSquaresError()
-    elif model_dict["loss_"] == "lad":
-        model.loss_ = _gb_losses.LeastAbsoluteError()
-    elif model_dict["loss_"] == "huber":
-        model.loss_ = _gb_losses.HuberLossFunction(1)
-    elif model_dict["loss_"] == "quantile":
-        model.loss_ = _gb_losses.QuantileLossFunction(1)
+    if model_dict["_loss"] == "ls":
+        model._loss = _gb_losses.LeastSquaresError()
+    elif model_dict["_loss"] == "lad":
+        model._loss = _gb_losses.LeastAbsoluteError()
+    elif model_dict["_loss"] == "huber":
+        model._loss = _gb_losses.HuberLossFunction(1)
+    elif model_dict["_loss"] == "quantile":
+        model._loss = _gb_losses.QuantileLossFunction(1)
 
     if "priors" in model_dict:
         model.init_.priors = np.array(model_dict["priors"])
@@ -319,8 +314,6 @@ def serialize_random_forest_regressor(model):
         "max_features": model.max_features,
         "max_leaf_nodes": model.max_leaf_nodes,
         "min_impurity_decrease": model.min_impurity_decrease,
-        "min_impurity_split": model.min_impurity_split,
-        "n_features_": model.n_features_,
         "n_features_in_": model.n_features_in_,
         "n_outputs_": model.n_outputs_,
         "estimators_": [serialize_decision_tree_regressor(decision_tree) for decision_tree in model.estimators_],
@@ -339,10 +332,8 @@ def deserialize_random_forest_regressor(model_dict):
     model = RandomForestRegressor(**model_dict["params"])
     estimators = [deserialize_decision_tree_regressor(decision_tree) for decision_tree in model_dict["estimators_"]]
     model.estimators_ = estimators
-    model.base_estimator_ = DecisionTreeRegressor()
-    model.n_features_ = model_dict["n_features_"]
-    if model_dict.get("n_features_in_"):
-        model.n_features_in_ = model_dict["n_features_in_"]
+    model.estimator_ = DecisionTreeRegressor()
+    model.n_features_in_ = model_dict["n_features_in_"]
     model.n_outputs_ = model_dict["n_outputs_"]
     model.max_depth = model_dict["max_depth"]
     model.min_samples_split = model_dict["min_samples_split"]
@@ -351,7 +342,6 @@ def deserialize_random_forest_regressor(model_dict):
     model.max_features = model_dict["max_features"]
     model.max_leaf_nodes = model_dict["max_leaf_nodes"]
     model.min_impurity_decrease = model_dict["min_impurity_decrease"]
-    model.min_impurity_split = model_dict["min_impurity_split"]
 
     if "oob_score_" in model_dict:
         model.oob_score_ = model_dict["oob_score_"]
@@ -377,6 +367,8 @@ def serialize_mlp_regressor(model):
         "loss_curve_": model.loss_curve_,
         "_no_improvement_count": model._no_improvement_count,
         "params": model.get_params(),
+        "validation_scores_": model.validation_scores_,
+        "best_validation_score_": model.best_validation_score_,
     }
 
     return serialized_model
@@ -398,6 +390,8 @@ def deserialize_mlp_regressor(model_dict):
     model._no_improvement_count = model_dict["_no_improvement_count"]
     model.best_loss_ = np.float64(model_dict["best_loss_"])
     model.loss_curve_ = model_dict["loss_curve_"]
+    model.validation_scores_ = model_dict["validation_scores_"]
+    model.best_validation_score_ = model_dict["best_validation_score_"]
     return model
 
 
@@ -407,7 +401,6 @@ def serialize_decision_tree_regressor(model):
         "meta": "decision-tree-regression",
         "feature_importances_": model.feature_importances_.tolist(),
         "max_features_": model.max_features_,
-        "n_features_": model.n_features_,
         "n_features_in_": model.n_features_in_,
         "n_outputs_": model.n_outputs_,
         "tree_": tree,
@@ -426,11 +419,9 @@ def deserialize_decision_tree_regressor(model_dict):
     deserialized_decision_tree = DecisionTreeRegressor()
 
     deserialized_decision_tree.max_features_ = model_dict["max_features_"]
-    deserialized_decision_tree.n_features_ = model_dict["n_features_"]
+    deserialized_decision_tree.n_features_in_ = model_dict["n_features_in_"]
     deserialized_decision_tree.n_outputs_ = model_dict["n_outputs_"]
-    if model_dict.get("n_features_in_"):
-        deserialized_decision_tree.n_features_in_ = model_dict["n_features_in_"]
-    tree = deserialize_tree(model_dict["tree_"], model_dict["n_features_"], 1, model_dict["n_outputs_"])
+    tree = deserialize_tree(model_dict["tree_"], model_dict["n_features_in_"], 1, model_dict["n_outputs_"])
     deserialized_decision_tree.tree_ = tree
 
     return deserialized_decision_tree

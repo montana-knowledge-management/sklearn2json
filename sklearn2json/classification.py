@@ -1,28 +1,18 @@
 import numpy as np
 import scipy as sp
-from sklearn import discriminant_analysis
-from sklearn import dummy
-from sklearn.ensemble import _gb_losses
-from sklearn.ensemble import GradientBoostingClassifier
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.linear_model import LogisticRegression
-from sklearn.linear_model import Perceptron
-from sklearn.naive_bayes import BernoulliNB
-from sklearn.naive_bayes import ComplementNB
-from sklearn.naive_bayes import GaussianNB
-from sklearn.naive_bayes import MultinomialNB
+from sklearn import discriminant_analysis, dummy
+from sklearn.ensemble import GradientBoostingClassifier, RandomForestClassifier, _gb_losses
+from sklearn.linear_model import LogisticRegression, Perceptron
+from sklearn.naive_bayes import BernoulliNB, ComplementNB, GaussianNB, MultinomialNB
 from sklearn.neural_network import MLPClassifier
-from sklearn.svm import LinearSVC
-from sklearn.svm import SVC
+from sklearn.neural_network._stochastic_optimizers import AdamOptimizer
+from sklearn.svm import SVC, LinearSVC
 from sklearn.tree import DecisionTreeClassifier
-from sklearn2json.common_functions import deserialize_tree
-from sklearn2json.common_functions import serialize_tree
-from sklearn2json.csr import deserialize_csr_matrix
-from sklearn2json.csr import serialize_csr_matrix
-from sklearn2json.label_encoders import deserialize_label_binarizer
-from sklearn2json.label_encoders import serialize_label_binarizer
-from sklearn2json.regression import deserialize_decision_tree_regressor
-from sklearn2json.regression import serialize_decision_tree_regressor
+
+from sklearn2json.common_functions import deserialize_tree, serialize_tree
+from sklearn2json.csr import deserialize_csr_matrix, serialize_csr_matrix
+from sklearn2json.label_encoders import deserialize_label_binarizer, serialize_label_binarizer
+from sklearn2json.regression import deserialize_decision_tree_regressor, serialize_decision_tree_regressor
 
 
 def serialize_logistic_regression(model):
@@ -60,7 +50,7 @@ def serialize_bernoulli_nb(model):
         "feature_count_": model.feature_count_.tolist(),
         "feature_log_prob_": model.feature_log_prob_.tolist(),
         "n_features_in_": model.n_features_in_,
-        "n_features_": model.n_features_,
+        # "n_features_": model.n_features_,
         "params": model.get_params(),
     }
 
@@ -75,7 +65,7 @@ def deserialize_bernoulli_nb(model_dict):
     model.class_log_prior_ = np.array(model_dict["class_log_prior_"])
     model.feature_count_ = np.array(model_dict["feature_count_"])
     model.feature_log_prob_ = np.array(model_dict["feature_log_prob_"])
-    model.n_features_ = model_dict["n_features_"]
+    # model.n_features_ = model_dict["n_features_"]
     if model_dict.get("n_features_in_"):
         model.n_features_in_ = model_dict["n_features_in_"]
 
@@ -89,7 +79,7 @@ def serialize_gaussian_nb(model):
         "class_count_": model.class_count_.tolist(),
         "class_prior_": model.class_prior_.tolist(),
         "theta_": model.theta_.tolist(),
-        "sigma_": model.sigma_.tolist(),
+        "var_": model.var_.tolist(),
         "epsilon_": model.epsilon_,
         "n_features_in_": model.n_features_in_,
         "params": model.get_params(),
@@ -105,7 +95,7 @@ def deserialize_gaussian_nb(model_dict):
     model.class_count_ = np.array(model_dict["class_count_"])
     model.class_prior_ = np.array(model_dict["class_prior_"])
     model.theta_ = np.array(model_dict["theta_"])
-    model.sigma_ = np.array(model_dict["sigma_"])
+    model.var_ = np.array(model_dict["var_"])
     model.epsilon_ = np.float64(model_dict["epsilon_"])
     if model_dict.get("n_features_in_"):
         model.n_features_in_ = model_dict["n_features_in_"]
@@ -122,7 +112,7 @@ def serialize_multinomial_nb(model):
         "feature_count_": model.feature_count_.tolist(),
         "feature_log_prob_": model.feature_log_prob_.tolist(),
         "n_features_in_": model.n_features_in_,
-        "n_features_": model.n_features_,
+        # "n_features_": model.n_features_,
         "params": model.get_params(),
     }
 
@@ -137,7 +127,7 @@ def deserialize_multinomial_nb(model_dict):
     model.class_log_prior_ = np.array(model_dict["class_log_prior_"])
     model.feature_count_ = np.array(model_dict["feature_count_"])
     model.feature_log_prob_ = np.array(model_dict["feature_log_prob_"])
-    model.n_features_ = model_dict["n_features_"]
+    # model.n_features_ = model_dict["n_features_"]
     if model_dict.get("n_features_in_"):
         model.n_features_in_ = model_dict["n_features_in_"]
     return model
@@ -153,7 +143,7 @@ def serialize_complement_nb(model):
         "feature_log_prob_": model.feature_log_prob_.tolist(),
         "feature_all_": model.feature_all_.tolist(),
         "n_features_in_": model.n_features_in_,
-        "n_features_": model.n_features_,
+        # "n_features_": model.n_features_,
         "params": model.get_params(),
     }
 
@@ -169,7 +159,7 @@ def deserialize_complement_nb(model_dict):
     model.feature_count_ = np.array(model_dict["feature_count_"])
     model.feature_log_prob_ = np.array(model_dict["feature_log_prob_"])
     model.feature_all_ = np.array(model_dict["feature_all_"])
-    model.n_features_ = model_dict["n_features_"]
+    # model.n_features_ = model_dict["n_features_"]
     if model_dict.get("n_features_in_"):
         model.n_features_in_ = model_dict["n_features_in_"]
     return model
@@ -187,6 +177,7 @@ def serialize_lda(model):
         "xbar_": model.xbar_.tolist(),
         "classes_": model.classes_.tolist(),
         "n_features_in_": model.n_features_in_,
+        "_n_features_out": model._n_features_out,
         "_max_components": model._max_components,
         "params": model.get_params(),
     }
@@ -210,6 +201,7 @@ def deserialize_lda(model_dict):
     if model_dict.get("n_features_in_"):
         model.n_features_in_ = model_dict["n_features_in_"]
     model._max_components = model_dict["_max_components"]
+    model._n_features_out = model_dict["_n_features_out"]
 
     return model
 
@@ -254,7 +246,7 @@ def serialize_decision_tree(model):
         "feature_importances_": model.feature_importances_.tolist(),
         "max_features_": model.max_features_,
         "n_classes_": int(model.n_classes_),
-        "n_features_": model.n_features_,
+        # "n_features_": model.n_features_,
         "n_features_in_": model.n_features_in_,
         "n_outputs_": model.n_outputs_,
         "tree_": tree,
@@ -277,13 +269,13 @@ def deserialize_decision_tree(model_dict):
     deserialized_model.classes_ = np.array(model_dict["classes_"])
     deserialized_model.max_features_ = model_dict["max_features_"]
     deserialized_model.n_classes_ = np.int64(model_dict["n_classes_"])
-    deserialized_model.n_features_ = model_dict["n_features_"]
+    # deserialized_model.n_features_ = model_dict["n_features_"]
     if model_dict.get("n_features_in_"):
         deserialized_model.n_features_in_ = model_dict["n_features_in_"]
     deserialized_model.n_outputs_ = model_dict["n_outputs_"]
 
     tree = deserialize_tree(
-        model_dict["tree_"], model_dict["n_features_"], model_dict["n_classes_"], model_dict["n_outputs_"]
+        model_dict["tree_"], model_dict["n_features_in_"], model_dict["n_classes_"], model_dict["n_outputs_"]
     )
     deserialized_model.tree_ = tree
 
@@ -304,7 +296,7 @@ def serialize_gradient_boosting(model):
         "_n_classes": model._n_classes,
         "n_classes_": model.n_classes_,
         "n_features_in_": model.n_features_in_,
-        "n_features_": model.n_features_,
+        # "n_features_": model.n_features_,
         "train_score_": model.train_score_.tolist(),
         "params": model.get_params(),
         "estimators_shape": list(model.estimators_.shape),
@@ -318,22 +310,23 @@ def serialize_gradient_boosting(model):
     elif isinstance(model.init_, str):
         serialized_model["init_"] = model.init_
 
-    if isinstance(model.loss_, _gb_losses.BinomialDeviance):
-        serialized_model["loss_"] = "deviance"
-    elif isinstance(model.loss_, _gb_losses.ExponentialLoss):
-        serialized_model["loss_"] = "exponential"
-    elif isinstance(model.loss_, _gb_losses.MultinomialDeviance):
-        serialized_model["loss_"] = "multinomial"
+    if isinstance(model._loss, _gb_losses.BinomialDeviance):
+        serialized_model["_loss"] = "deviance"
+    elif isinstance(model._loss, _gb_losses.ExponentialLoss):
+        serialized_model["_loss"] = "exponential"
+    elif isinstance(model._loss, _gb_losses.MultinomialDeviance):
+        serialized_model["_loss"] = "multinomial"
 
     if "priors" in model.init_.__dict__:
         serialized_model["priors"] = model.init_.priors.tolist()
 
-    serialized_model["estimators_"] = [
+    a = [
         serialize_decision_tree_regressor(regression_tree)
         for regression_tree in model.estimators_.reshape(
             -1,
         )
     ]
+    serialized_model["estimators_"] = a
 
     return serialized_model
 
@@ -354,14 +347,15 @@ def deserialize_gradient_boosting(model_dict):
     if model_dict.get("n_features_in_"):
         model.n_features_in_ = model_dict["n_features_in_"]
     model._n_classes = model_dict["_n_classes"]
-    model.n_features_ = model_dict["n_features_"]
+    # model.n_features_ = model_dict["n_features_"]
     model.n_estimators_ = model_dict["n_estimators_"]
-    if model_dict["loss_"] == "deviance":
-        model.loss_ = _gb_losses.BinomialDeviance(model.n_classes_)
-    elif model_dict["loss_"] == "exponential":
-        model.loss_ = _gb_losses.ExponentialLoss(model.n_classes_)
-    elif model_dict["loss_"] == "multinomial":
-        model.loss_ = _gb_losses.MultinomialDeviance(model.n_classes_)
+
+    if model_dict["_loss"] == "deviance":
+        model._loss = _gb_losses.BinomialDeviance(model_dict["_n_classes"])
+    elif model_dict["_loss"] == "exponential":
+        model._loss = _gb_losses.ExponentialLoss(model_dict["_n_classes"])
+    elif model_dict["_loss"] == "multinomial":
+        model._loss = _gb_losses.MultinomialDeviance(model_dict["_n_classes"])
 
     if "priors" in model_dict:
         model.init_.priors = np.array(model_dict["priors"])
@@ -378,8 +372,8 @@ def serialize_random_forest(model):
         "max_features": model.max_features,
         "max_leaf_nodes": model.max_leaf_nodes,
         "min_impurity_decrease": model.min_impurity_decrease,
-        "min_impurity_split": model.min_impurity_split,
-        "n_features_": model.n_features_,
+        "min_impurity_decrease": model.min_impurity_decrease,
+        # "n_features_": model.n_features_,
         "n_features_in_": model.n_features_in_,
         "n_outputs_": model.n_outputs_,
         "classes_": model.classes_.tolist(),
@@ -404,9 +398,9 @@ def deserialize_random_forest(model_dict):
     model = RandomForestClassifier(**model_dict["params"])
     estimators = [deserialize_decision_tree(decision_tree) for decision_tree in model_dict["estimators_"]]
     model.estimators_ = estimators
-    model.base_estimator_ = DecisionTreeClassifier()
+    model.estimator_ = DecisionTreeClassifier()
     model.classes_ = np.array(model_dict["classes_"])
-    model.n_features_ = model_dict["n_features_"]
+    # model.n_features_ = model_dict["n_features_"]
     if model_dict.get("n_features_in_"):
         model.n_features_in_ = model_dict["n_features_in_"]
     model.n_outputs_ = model_dict["n_outputs_"]
@@ -417,7 +411,7 @@ def deserialize_random_forest(model_dict):
     model.max_features = model_dict["max_features"]
     model.max_leaf_nodes = model_dict["max_leaf_nodes"]
     model.min_impurity_decrease = model_dict["min_impurity_decrease"]
-    model.min_impurity_split = model_dict["min_impurity_split"]
+    model.min_impurity_decrease = model_dict["min_impurity_decrease"]
 
     if "oob_score_" in model_dict:
         model.oob_score_ = model_dict["oob_score_"]
@@ -480,6 +474,10 @@ def serialize_mlp(model):
         "_label_binarizer": serialize_label_binarizer(model._label_binarizer),
         "hidden_layer_sizes": model.hidden_layer_sizes,
         "params": model.get_params(),
+        "solver": model.solver,
+        "best_validation_score_": model.best_validation_score_,
+        "validation_scores_": model.validation_scores_,
+        # 'random_state': model.random_state,
     }
 
     if isinstance(model.classes_, list):
@@ -506,6 +504,8 @@ def deserialize_mlp(model_dict):
     model.n_outputs_ = model_dict["n_outputs_"]
     model.out_activation_ = model_dict["out_activation_"]
     model._label_binarizer = deserialize_label_binarizer(model_dict["_label_binarizer"])
+    model.validation_scores_ = model_dict["validation_scores_"]
+    model.best_validation_score_ = model_dict["best_validation_score_"]
 
     model.classes_ = np.array(model_dict["classes_"])
 
@@ -528,6 +528,8 @@ def serialize_svm(model):
         "fit_status_": model.fit_status_,
         "n_features_in_": model.n_features_in_,
         "params": model.get_params(),
+        "n_iter_": model.n_iter_.tolist(),
+        "_num_iter": model._num_iter.tolist(),
     }
 
     if isinstance(model.support_vectors_, sp.sparse.csr_matrix):
@@ -566,6 +568,8 @@ def deserialize_svm(model_dict):
     model._probA = np.array(model_dict["probA_"]).astype(np.float64)
     model._probB = np.array(model_dict["probB_"]).astype(np.float64)
     model._intercept_ = np.array(model_dict["_intercept_"]).astype(np.float64)
+    model.n_iter_ = np.array(model_dict["n_iter_"]).astype(np.int32)
+    model._num_iter = np.array(model_dict["_num_iter"]).astype(np.int32)
     if "meta" in model_dict["support_vectors_"] and model_dict["support_vectors_"]["meta"] == "csr":
         model.support_vectors_ = deserialize_csr_matrix(model_dict["support_vectors_"])
         model._sparse = True

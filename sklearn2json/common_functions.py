@@ -23,6 +23,7 @@ def deserialize_tree(tree_dict, n_features, n_classes, n_outputs):
         "impurity",
         "n_node_samples",
         "weighted_n_node_samples",
+        "missing_go_to_left",
     ]
     tree_dict["nodes"] = np.array(
         tree_dict["nodes"], dtype=np.dtype({"names": names, "formats": tree_dict["nodes_dtype"]})

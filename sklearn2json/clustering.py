@@ -1,6 +1,5 @@
 import numpy as np
-from sklearn.cluster import DBSCAN
-from sklearn.cluster import KMeans
+from sklearn.cluster import DBSCAN, KMeans
 
 
 def serialize_dbscan_clustering(model):
@@ -40,6 +39,7 @@ def serialize_k_means(model):
         "n_iter_": model.n_iter_,
         "_algorithm": model._algorithm,
         "params": model.get_params(),
+        "_n_features_out": model._n_features_out,
     }
 
     return serialized_model
@@ -56,4 +56,5 @@ def deserialize_k_means(model_dict):
     model._tol = np.float64(model_dict["_tol"])
     model._n_threads = model_dict["_n_threads"]
     model._algorithm = model_dict["_algorithm"]
+    model._n_features_out = model_dict["_n_features_out"]
     return model

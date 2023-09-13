@@ -2,12 +2,8 @@ import unittest
 from os import remove
 from test.helper_test import print_differences
 
-from sklearn.ensemble import GradientBoostingRegressor
-from sklearn.ensemble import RandomForestRegressor
-from sklearn.linear_model import ElasticNet
-from sklearn.linear_model import Lasso
-from sklearn.linear_model import LinearRegression
-from sklearn.linear_model import Ridge
+from sklearn.ensemble import GradientBoostingRegressor, RandomForestRegressor
+from sklearn.linear_model import ElasticNet, Lasso, LinearRegression, Ridge
 from sklearn.neural_network import MLPRegressor
 from sklearn.svm import SVR
 from sklearn.tree import DecisionTreeRegressor
@@ -25,7 +21,7 @@ class RegressionTestCase(unittest.TestCase):
             exclude_keys = []
         model.fit(x_input, y_input)
         model, test_model = print_differences(model)
-        self.assertEqual(model.get_params(), test_model.get_params())
+        self.assertDictEqual(model.get_params(), test_model.get_params())
         self.assertEqual(set(model.__dict__.keys() - exclude_keys), set(test_model.__dict__.keys()))
         self.assertEqual(model.predict(new_x_input), test_model.predict(new_x_input))
         remove("model.json")
