@@ -1,29 +1,18 @@
 import numpy as np
 import scipy as sp
-from sklearn import discriminant_analysis
-from sklearn import dummy
-from sklearn.ensemble import _gb_losses
-from sklearn.ensemble import GradientBoostingClassifier
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.linear_model import LogisticRegression
-from sklearn.linear_model import Perceptron
-from sklearn.naive_bayes import BernoulliNB
-from sklearn.naive_bayes import ComplementNB
-from sklearn.naive_bayes import GaussianNB
-from sklearn.naive_bayes import MultinomialNB
+from sklearn import discriminant_analysis, dummy
+from sklearn.ensemble import GradientBoostingClassifier, RandomForestClassifier, _gb_losses
+from sklearn.linear_model import LogisticRegression, Perceptron
+from sklearn.naive_bayes import BernoulliNB, ComplementNB, GaussianNB, MultinomialNB
 from sklearn.neural_network import MLPClassifier
 from sklearn.neural_network._stochastic_optimizers import AdamOptimizer
-from sklearn.svm import LinearSVC
-from sklearn.svm import SVC
+from sklearn.svm import SVC, LinearSVC
 from sklearn.tree import DecisionTreeClassifier
-from sklearn2json.common_functions import deserialize_tree
-from sklearn2json.common_functions import serialize_tree
-from sklearn2json.csr import deserialize_csr_matrix
-from sklearn2json.csr import serialize_csr_matrix
-from sklearn2json.label_encoders import deserialize_label_binarizer
-from sklearn2json.label_encoders import serialize_label_binarizer
-from sklearn2json.regression import deserialize_decision_tree_regressor
-from sklearn2json.regression import serialize_decision_tree_regressor
+
+from sklearn2json.common_functions import deserialize_tree, serialize_tree
+from sklearn2json.csr import deserialize_csr_matrix, serialize_csr_matrix
+from sklearn2json.label_encoders import deserialize_label_binarizer, serialize_label_binarizer
+from sklearn2json.regression import deserialize_decision_tree_regressor, serialize_decision_tree_regressor
 
 
 def serialize_logistic_regression(model):
@@ -328,11 +317,15 @@ def serialize_gradient_boosting(model):
     elif isinstance(model._loss, _gb_losses.MultinomialDeviance):
         serialized_model["_loss"] = "multinomial"
 
-
     if "priors" in model.init_.__dict__:
         serialized_model["priors"] = model.init_.priors.tolist()
 
-    a = [ serialize_decision_tree_regressor(regression_tree) for regression_tree in model.estimators_.reshape(-1,) ]
+    a = [
+        serialize_decision_tree_regressor(regression_tree)
+        for regression_tree in model.estimators_.reshape(
+            -1,
+        )
+    ]
     serialized_model["estimators_"] = a
 
     return serialized_model
@@ -358,7 +351,7 @@ def deserialize_gradient_boosting(model_dict):
     model.n_estimators_ = model_dict["n_estimators_"]
 
     if model_dict["_loss"] == "deviance":
-        model._loss =  _gb_losses.BinomialDeviance(model_dict["_n_classes"])
+        model._loss = _gb_losses.BinomialDeviance(model_dict["_n_classes"])
     elif model_dict["_loss"] == "exponential":
         model._loss = _gb_losses.ExponentialLoss(model_dict["_n_classes"])
     elif model_dict["_loss"] == "multinomial":
@@ -482,8 +475,8 @@ def serialize_mlp(model):
         "hidden_layer_sizes": model.hidden_layer_sizes,
         "params": model.get_params(),
         "solver": model.solver,
-        'best_validation_score_': model.best_validation_score_,
-        'validation_scores_': model.validation_scores_,
+        "best_validation_score_": model.best_validation_score_,
+        "validation_scores_": model.validation_scores_,
         # 'random_state': model.random_state,
     }
 
@@ -491,8 +484,6 @@ def serialize_mlp(model):
         serialized_model["classes_"] = [array.tolist() for array in model.classes_]
     else:
         serialized_model["classes_"] = model.classes_.tolist()
-
-
 
     return serialized_model
 
@@ -515,7 +506,6 @@ def deserialize_mlp(model_dict):
     model._label_binarizer = deserialize_label_binarizer(model_dict["_label_binarizer"])
     model.validation_scores_ = model_dict["validation_scores_"]
     model.best_validation_score_ = model_dict["best_validation_score_"]
-
 
     model.classes_ = np.array(model_dict["classes_"])
 

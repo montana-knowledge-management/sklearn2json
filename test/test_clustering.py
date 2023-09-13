@@ -2,8 +2,7 @@ import unittest
 from os import remove
 from test.helper_test import print_differences
 
-from sklearn.cluster import DBSCAN
-from sklearn.cluster import KMeans
+from sklearn.cluster import DBSCAN, KMeans
 
 input_x = [[0, 2, 1], [3, 3, 3], [1, 1, 1], [2, 2, 2], [1, 3, 2], [1, 5, 4]]
 

@@ -1,7 +1,6 @@
 import json
 
-from sklearn2json.model_selector import deserialize_model
-from sklearn2json.model_selector import serialize_model
+from sklearn2json.model_selector import deserialize_model, serialize_model
 
 
 def from_json(file_name):

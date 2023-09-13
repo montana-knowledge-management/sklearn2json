@@ -1,19 +1,14 @@
 import numpy as np
 import scipy as sp
 from sklearn import dummy
-from sklearn.ensemble import _gb_losses
-from sklearn.ensemble import GradientBoostingRegressor
-from sklearn.ensemble import RandomForestRegressor
-from sklearn.linear_model import ElasticNet
-from sklearn.linear_model import Lasso
-from sklearn.linear_model import LinearRegression
-from sklearn.linear_model import Ridge
+from sklearn.ensemble import GradientBoostingRegressor, RandomForestRegressor, _gb_losses
+from sklearn.linear_model import ElasticNet, Lasso, LinearRegression, Ridge
 from sklearn.neural_network import MLPRegressor
 from sklearn.svm import SVR
 from sklearn.tree import DecisionTreeRegressor
+
 from sklearn2json import csr
-from sklearn2json.common_functions import deserialize_tree
-from sklearn2json.common_functions import serialize_tree
+from sklearn2json.common_functions import deserialize_tree, serialize_tree
 
 
 def serialize_linear_regressor(model):
@@ -373,7 +368,7 @@ def serialize_mlp_regressor(model):
         "_no_improvement_count": model._no_improvement_count,
         "params": model.get_params(),
         "validation_scores_": model.validation_scores_,
-        "best_validation_score_": model.best_validation_score_
+        "best_validation_score_": model.best_validation_score_,
     }
 
     return serialized_model
