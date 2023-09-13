@@ -24,7 +24,7 @@ def serialize_linear_regressor(model):
         "singular_": model.singular_.tolist(),
         "rank_": model.rank_,
         "n_features_in_": model.n_features_in_,
-        "_residues": model._residues,
+        # "_residues": model._residues,
         "fit_intercept": model.fit_intercept,
         "params": model.get_params(),
     }
@@ -36,7 +36,7 @@ def deserialize_linear_regressor(model_dict):
     model = LinearRegression(**model_dict["params"])
     model.singular_ = np.array(model_dict["singular_"])
     model.coef_ = np.array(model_dict["coef_"])
-    model._residues = np.float64(model_dict["_residues"])
+    # model._residues = np.float64(model_dict["_residues"])
     model.intercept_ = np.float64(model_dict["intercept_"])
     model.rank_ = model_dict["rank_"]
     if model_dict.get("n_features_in_"):
@@ -173,7 +173,6 @@ def serialize_svr(model):
     serialized_model = {
         "meta": "svr",
         "n_features_in_": model.n_features_in_,
-        "class_weight_": model.class_weight_.tolist(),
         "support_": model.support_.tolist(),
         "fit_status_": model.fit_status_,
         "_n_support": model._n_support.tolist(),
@@ -184,6 +183,8 @@ def serialize_svr(model):
         "shape_fit_": model.shape_fit_,
         "_gamma": model._gamma,
         "params": model.get_params(),
+        "n_iter_": model.n_iter_,
+        "_num_iter": model._num_iter.tolist(),
     }
 
     if isinstance(model.support_vectors_, sp.sparse.csr_matrix):
@@ -211,13 +212,14 @@ def deserialize_svr(model_dict):
     model._gamma = model_dict["_gamma"]
     if model_dict.get("n_features_in_"):
         model.n_features_in_ = model_dict["n_features_in_"]
-    model.class_weight_ = np.array(model_dict["class_weight_"]).astype(np.float64)
     model.support_ = np.array(model_dict["support_"]).astype(np.int32)
     model._n_support = np.array(model_dict["_n_support"]).astype(np.int32)
     model.intercept_ = np.array(model_dict["intercept_"]).astype(np.float64)
     model._probA = np.array(model_dict["_probA"]).astype(np.float64)
     model._probB = np.array(model_dict["_probB"]).astype(np.float64)
     model._intercept_ = np.array(model_dict["_intercept_"]).astype(np.float64)
+    model.n_iter_ = model_dict["n_iter_"]
+    model._num_iter = np.array(model_dict["_num_iter"]).astype(np.int32)
 
     if "meta" in model_dict["support_vectors_"] and model_dict["support_vectors_"]["meta"] == "csr":
         model.support_vectors_ = csr.deserialize_csr_matrix(model_dict["support_vectors_"])
@@ -248,7 +250,7 @@ def serialize_gradient_boosting_regressor(model):
     serialized_model = {
         "meta": "gb-regression",
         "max_features_": model.max_features_,
-        "n_features_": model.n_features_,
+        # "n_features_": model.n_features_,
         "n_estimators_": model.n_estimators_,
         "n_features_in_": model.n_features_in_,
         "train_score_": model.train_score_.tolist(),
@@ -264,14 +266,14 @@ def serialize_gradient_boosting_regressor(model):
     elif isinstance(model.init_, str):
         serialized_model["init_"] = model.init_
 
-    if isinstance(model.loss_, _gb_losses.LeastSquaresError):
-        serialized_model["loss_"] = "ls"
-    elif isinstance(model.loss_, _gb_losses.LeastAbsoluteError):
-        serialized_model["loss_"] = "lad"
-    elif isinstance(model.loss_, _gb_losses.HuberLossFunction):
-        serialized_model["loss_"] = "huber"
-    elif isinstance(model.loss_, _gb_losses.QuantileLossFunction):
-        serialized_model["loss_"] = "quantile"
+    if isinstance(model._loss, _gb_losses.LeastSquaresError):
+        serialized_model["_loss"] = "ls"
+    elif isinstance(model._loss, _gb_losses.LeastAbsoluteError):
+        serialized_model["_loss"] = "lad"
+    elif isinstance(model._loss, _gb_losses.HuberLossFunction):
+        serialized_model["_loss"] = "huber"
+    elif isinstance(model._loss, _gb_losses.QuantileLossFunction):
+        serialized_model["_loss"] = "quantile"
 
     if "priors" in model.init_.__dict__:
         serialized_model["priors"] = model.init_.priors.tolist()
@@ -293,14 +295,14 @@ def deserialize_gradient_boosting_regressor(model_dict):
     model.n_estimators_ = model_dict["n_estimators_"]
     model.train_score_ = np.array(model_dict["train_score_"])
     model.max_features_ = model_dict["max_features_"]
-    if model_dict["loss_"] == "ls":
-        model.loss_ = _gb_losses.LeastSquaresError()
-    elif model_dict["loss_"] == "lad":
-        model.loss_ = _gb_losses.LeastAbsoluteError()
-    elif model_dict["loss_"] == "huber":
-        model.loss_ = _gb_losses.HuberLossFunction(1)
-    elif model_dict["loss_"] == "quantile":
-        model.loss_ = _gb_losses.QuantileLossFunction(1)
+    if model_dict["_loss"] == "ls":
+        model._loss = _gb_losses.LeastSquaresError()
+    elif model_dict["_loss"] == "lad":
+        model._loss = _gb_losses.LeastAbsoluteError()
+    elif model_dict["_loss"] == "huber":
+        model._loss = _gb_losses.HuberLossFunction(1)
+    elif model_dict["_loss"] == "quantile":
+        model._loss = _gb_losses.QuantileLossFunction(1)
 
     if "priors" in model_dict:
         model.init_.priors = np.array(model_dict["priors"])
@@ -335,7 +337,7 @@ def deserialize_random_forest_regressor(model_dict):
     model = RandomForestRegressor(**model_dict["params"])
     estimators = [deserialize_decision_tree_regressor(decision_tree) for decision_tree in model_dict["estimators_"]]
     model.estimators_ = estimators
-    model.base_estimator_ = DecisionTreeRegressor()
+    model.estimator_ = DecisionTreeRegressor()
     model.n_features_in_ = model_dict["n_features_in_"]
     model.n_outputs_ = model_dict["n_outputs_"]
     model.max_depth = model_dict["max_depth"]
@@ -370,6 +372,8 @@ def serialize_mlp_regressor(model):
         "loss_curve_": model.loss_curve_,
         "_no_improvement_count": model._no_improvement_count,
         "params": model.get_params(),
+        "validation_scores_": model.validation_scores_,
+        "best_validation_score_": model.best_validation_score_
     }
 
     return serialized_model
@@ -391,6 +395,8 @@ def deserialize_mlp_regressor(model_dict):
     model._no_improvement_count = model_dict["_no_improvement_count"]
     model.best_loss_ = np.float64(model_dict["best_loss_"])
     model.loss_curve_ = model_dict["loss_curve_"]
+    model.validation_scores_ = model_dict["validation_scores_"]
+    model.best_validation_score_ = model_dict["best_validation_score_"]
     return model
 
 
