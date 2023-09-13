@@ -1,6 +1,6 @@
 # Main package description
 [tool.poetry]
-name = "Sklearn2JSON"
+name = "sklearn2json"
 version = "2023.1"
 description = "Python library for converting Scikit-Learn models to JSON."
 authors = [
