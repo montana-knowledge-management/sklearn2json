@@ -187,6 +187,7 @@ def serialize_lda(model):
         "xbar_": model.xbar_.tolist(),
         "classes_": model.classes_.tolist(),
         "n_features_in_": model.n_features_in_,
+        "_n_features_out": model._n_features_out,
         "_max_components": model._max_components,
         "params": model.get_params(),
     }
@@ -210,6 +211,7 @@ def deserialize_lda(model_dict):
     if model_dict.get("n_features_in_"):
         model.n_features_in_ = model_dict["n_features_in_"]
     model._max_components = model_dict["_max_components"]
+    model._n_features_out = model_dict["_n_features_out"]
 
     return model
 
