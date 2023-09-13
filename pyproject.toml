@@ -7,16 +7,15 @@ authors = [
     "MONTANA Knowledge Management ltd. <info@distiller.dev>"
 ]
 license = "AGPL"
+readme="README.md"
 
-# Project dependencies only
 [tool.poetry.dependencies]
 python = "^3.10, <3.11"
 scikit-learn="^1.3.0"
+pytest-random-order = "^1.1.0"
 
 
-# Dependencies for developers
-# list all devtools here
-[tool.poetry.dev-dependencies]
+[tool.poetry.group.dev.dependencies]
 black = "*"
 coverage = "*"
 pre-commit = "*"
@@ -28,9 +27,8 @@ pylint = "^2.11.1"
 requests = "^2.26.0"
 
 
-# build system setup
 [build-system]
-requires = ["poetry-core>=1.0.0"]
+requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 
@@ -53,7 +51,7 @@ quiet = true
 # https://coverage.readthedocs.io/en/6.1.1/config.html
 
 [tool.coverage.run]
-command_line = "-m py.test"
+command_line = "-m pytest --random-order"
 source = ['sklearn2json']
 branch = true
 # omit = []
