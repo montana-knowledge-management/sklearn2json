@@ -2,27 +2,24 @@
 # pre-commit run --all-files
 repos:
   - repo: https://github.com/asottile/pyupgrade
-    rev: v2.13.0
+    rev: v3.10.1
     hooks:
       - id: pyupgrade
         # TODO: migrate this to pyproject.toml
         args: ['--py39-plus', '--exit-zero-even-if-changed']
 
   - repo: https://github.com/psf/black
-    rev: 21.4b0
+    rev: 23.9.1
     hooks:
       - id: black
 
   - repo: https://github.com/pycqa/isort
-    rev: 5.8.0
+    rev: 5.12.0
     hooks:
       - id: isort
 
   - repo: https://github.com/pycqa/pylint
-    rev: v2.11.1
-    entry: pylint
-    files: '^sklearn2json/'
-    types: [file, python]
+    rev: v3.0.0a7
     hooks:
       - id: pylint
         args: [
@@ -30,7 +27,7 @@ repos:
               "-j 4"]
 
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v3.4.0
+    rev: v4.4.0
     hooks:
       - id: check-added-large-files
       - id: check-yaml
