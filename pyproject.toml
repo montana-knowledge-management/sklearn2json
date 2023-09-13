@@ -1,13 +1,17 @@
 # Main package description
 [tool.poetry]
 name = "sklearn2json"
-version = "2023.1"
+version = "2023.2"
 description = "Python library for converting Scikit-Learn models to JSON."
 authors = [
     "MONTANA Knowledge Management ltd. <info@distiller.dev>"
 ]
 license = "AGPL"
 readme="README.md"
+classifiers = [
+    "Programming Language :: Python :: 3.10",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
 
 [tool.poetry.dependencies]
 python = "^3.10, <3.11"
@@ -64,7 +68,7 @@ exclude_lines = [
     'def __str',
     '@(abc\.)?abstractmethod'
 ]
-omit = ['tests', 'examples']
+omit = ['test']
 
 
 
