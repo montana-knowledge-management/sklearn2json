@@ -20,9 +20,6 @@ poetry add sklearn2json@2023.1
 python3.7 - 3.8:
 
 ```shell
-poetry add sklearn2json@2023.1
-```
-```shell
 poetry add sklearn2json@2021.5
 ```
 
