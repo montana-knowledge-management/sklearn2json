@@ -12,6 +12,7 @@ from sklearn.naive_bayes import ComplementNB
 from sklearn.naive_bayes import GaussianNB
 from sklearn.naive_bayes import MultinomialNB
 from sklearn.neural_network import MLPClassifier
+from sklearn.neural_network._stochastic_optimizers import AdamOptimizer
 from sklearn.svm import LinearSVC
 from sklearn.svm import SVC
 from sklearn.tree import DecisionTreeClassifier
@@ -404,7 +405,7 @@ def deserialize_random_forest(model_dict):
     model = RandomForestClassifier(**model_dict["params"])
     estimators = [deserialize_decision_tree(decision_tree) for decision_tree in model_dict["estimators_"]]
     model.estimators_ = estimators
-    model.base_estimator_ = DecisionTreeClassifier()
+    model.estimator_ = DecisionTreeClassifier()
     model.classes_ = np.array(model_dict["classes_"])
     # model.n_features_ = model_dict["n_features_"]
     if model_dict.get("n_features_in_"):
@@ -480,12 +481,18 @@ def serialize_mlp(model):
         "_label_binarizer": serialize_label_binarizer(model._label_binarizer),
         "hidden_layer_sizes": model.hidden_layer_sizes,
         "params": model.get_params(),
+        "solver": model.solver,
+        'best_validation_score_': model.best_validation_score_,
+        'validation_scores_': model.validation_scores_,
+        # 'random_state': model.random_state,
     }
 
     if isinstance(model.classes_, list):
         serialized_model["classes_"] = [array.tolist() for array in model.classes_]
     else:
         serialized_model["classes_"] = model.classes_.tolist()
+
+
 
     return serialized_model
 
@@ -506,6 +513,9 @@ def deserialize_mlp(model_dict):
     model.n_outputs_ = model_dict["n_outputs_"]
     model.out_activation_ = model_dict["out_activation_"]
     model._label_binarizer = deserialize_label_binarizer(model_dict["_label_binarizer"])
+    model.validation_scores_ = model_dict["validation_scores_"]
+    model.best_validation_score_ = model_dict["best_validation_score_"]
+
 
     model.classes_ = np.array(model_dict["classes_"])
 
@@ -528,6 +538,8 @@ def serialize_svm(model):
         "fit_status_": model.fit_status_,
         "n_features_in_": model.n_features_in_,
         "params": model.get_params(),
+        "n_iter_": model.n_iter_.tolist(),
+        "_num_iter": model._num_iter.tolist(),
     }
 
     if isinstance(model.support_vectors_, sp.sparse.csr_matrix):
@@ -566,6 +578,8 @@ def deserialize_svm(model_dict):
     model._probA = np.array(model_dict["probA_"]).astype(np.float64)
     model._probB = np.array(model_dict["probB_"]).astype(np.float64)
     model._intercept_ = np.array(model_dict["_intercept_"]).astype(np.float64)
+    model.n_iter_ = np.array(model_dict["n_iter_"]).astype(np.int32)
+    model._num_iter = np.array(model_dict["_num_iter"]).astype(np.int32)
     if "meta" in model_dict["support_vectors_"] and model_dict["support_vectors_"]["meta"] == "csr":
         model.support_vectors_ = deserialize_csr_matrix(model_dict["support_vectors_"])
         model._sparse = True
