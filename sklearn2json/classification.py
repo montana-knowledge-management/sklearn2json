@@ -318,22 +318,19 @@ def serialize_gradient_boosting(model):
     elif isinstance(model.init_, str):
         serialized_model["init_"] = model.init_
 
-    if isinstance(model.loss_, _gb_losses.BinomialDeviance):
-        serialized_model["loss_"] = "deviance"
-    elif isinstance(model.loss_, _gb_losses.ExponentialLoss):
-        serialized_model["loss_"] = "exponential"
-    elif isinstance(model.loss_, _gb_losses.MultinomialDeviance):
-        serialized_model["loss_"] = "multinomial"
+    if isinstance(model._loss, _gb_losses.BinomialDeviance):
+        serialized_model["_loss"] = "deviance"
+    elif isinstance(model._loss, _gb_losses.ExponentialLoss):
+        serialized_model["_loss"] = "exponential"
+    elif isinstance(model._loss, _gb_losses.MultinomialDeviance):
+        serialized_model["_loss"] = "multinomial"
+
 
     if "priors" in model.init_.__dict__:
         serialized_model["priors"] = model.init_.priors.tolist()
 
-    serialized_model["estimators_"] = [
-        serialize_decision_tree_regressor(regression_tree)
-        for regression_tree in model.estimators_.reshape(
-            -1,
-        )
-    ]
+    a = [ serialize_decision_tree_regressor(regression_tree) for regression_tree in model.estimators_.reshape(-1,) ]
+    serialized_model["estimators_"] = a
 
     return serialized_model
 
@@ -356,12 +353,13 @@ def deserialize_gradient_boosting(model_dict):
     model._n_classes = model_dict["_n_classes"]
     # model.n_features_ = model_dict["n_features_"]
     model.n_estimators_ = model_dict["n_estimators_"]
-    if model_dict["loss_"] == "deviance":
-        model.loss_ = _gb_losses.BinomialDeviance(model.n_classes_)
-    elif model_dict["loss_"] == "exponential":
-        model.loss_ = _gb_losses.ExponentialLoss(model.n_classes_)
-    elif model_dict["loss_"] == "multinomial":
-        model.loss_ = _gb_losses.MultinomialDeviance(model.n_classes_)
+
+    if model_dict["_loss"] == "deviance":
+        model._loss =  _gb_losses.BinomialDeviance(model_dict["_n_classes"])
+    elif model_dict["_loss"] == "exponential":
+        model._loss = _gb_losses.ExponentialLoss(model_dict["_n_classes"])
+    elif model_dict["_loss"] == "multinomial":
+        model._loss = _gb_losses.MultinomialDeviance(model_dict["_n_classes"])
 
     if "priors" in model_dict:
         model.init_.priors = np.array(model_dict["priors"])
