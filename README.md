@@ -11,10 +11,10 @@ Python library for exporting Scikit-Learn models to JSON.
 
 ## Install
 
-python3.10:
+python3.8+:
 
 ```shell
-poetry add sklearn2json@2023.1
+poetry add sklearn2json@2023.3
 ```
 
 python3.7 - 3.8:
